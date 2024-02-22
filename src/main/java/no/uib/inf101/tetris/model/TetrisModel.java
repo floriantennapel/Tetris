@@ -2,14 +2,15 @@ package no.uib.inf101.tetris.model;
 
 import no.uib.inf101.grid.GridCell;
 import no.uib.inf101.grid.GridDimension;
+import no.uib.inf101.tetris.controller.ControllableTetrisModel;
 import no.uib.inf101.tetris.model.tetromino.Tetromino;
 import no.uib.inf101.tetris.model.tetromino.TetrominoFactory;
 import no.uib.inf101.tetris.view.ViewableTetrisModel;
 
-public class TetrisModel implements ViewableTetrisModel {
+public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel {
   private final TetrisBoard board;
   private final TetrominoFactory tetrominoFactory;
-  private final Tetromino currentlyFallingTetromino;
+  private Tetromino currentlyFallingTetromino;
 
   public TetrisModel(TetrisBoard board, TetrominoFactory tetrominoFactory) {
     this.board = board;
@@ -31,5 +32,32 @@ public class TetrisModel implements ViewableTetrisModel {
   @Override
   public Iterable<GridCell<Character>> getMovingTetrominoTiles() {
     return currentlyFallingTetromino;
+  }
+
+  @Override
+  public boolean moveTetromino(int deltaRow, int deltaCol) {
+    Tetromino moved = currentlyFallingTetromino.shiftedBy(deltaRow, deltaCol);
+
+    if (!isValidPosition(moved)) {
+      return false;
+    }
+
+    currentlyFallingTetromino = moved;
+    return true;
+  }
+
+  private boolean isValidPosition(Tetromino tetromino) {
+    for (GridCell<Character> gc : tetromino) {
+      // out of bounds
+      if (!board.positionIsOnGrid(gc.pos())) {
+        return false;
+      }
+      // cell is occupied
+      if (board.get(gc.pos()) != '-') {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

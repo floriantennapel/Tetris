@@ -23,7 +23,6 @@ public class TetrisView extends JPanel {
     int height = (int) (dimension.rows() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
     int width = (int) (dimension.cols() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
 
-    this.setFocusable(true);
     this.setPreferredSize(new Dimension(width, height));
     this.setBackground(colorTheme.getBackgroundColor());
   }
