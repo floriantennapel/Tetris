@@ -1,9 +1,6 @@
-package tetris.view;
+package no.uib.inf101.tetris.view;
 
-import no.uib.inf101.tetris.view.ColorTheme;
-import no.uib.inf101.tetris.view.DefaultColorTheme;
 import org.junit.jupiter.api.Test;
-
 import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
