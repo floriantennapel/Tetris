@@ -9,4 +9,7 @@ public interface ViewableTetrisModel {
 
   /** @return Every tile from tetris board containing position and symbol */
   Iterable<GridCell<Character>> getTilesOnBoard();
+
+  /** @return Tiles of currently moving tetromino */
+  Iterable<GridCell<Character>> getMovingTetrominoTiles();
 }

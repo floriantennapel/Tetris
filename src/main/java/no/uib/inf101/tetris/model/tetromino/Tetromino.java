@@ -84,11 +84,11 @@ public class Tetromino implements Iterable<GridCell<Character>> {
 
     // we want center column to either be directly in center
     // or if there are two center columns centerCol should be center-left
-    if (cols % 2 != 0) {
+    if (cols % 2 == 0) {
       centerCol -= 1;
     }
 
-    // at start position 0,0 center of tetromino is already 1
+    // at start position 0,0 center of tetromino is already 2
     int tetrominoCenter = 1;
     int deltaCol = centerCol - tetrominoCenter;
 

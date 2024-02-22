@@ -52,6 +52,7 @@ public class TetrisView extends JPanel {
     );
 
     drawCells(g, model.getTilesOnBoard(), posToPixel, colorTheme);
+    drawCells(g, model.getMovingTetrominoTiles(), posToPixel, colorTheme);
   }
 
   private static void drawCells(
