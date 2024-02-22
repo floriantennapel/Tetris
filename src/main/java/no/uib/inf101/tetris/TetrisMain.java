@@ -2,14 +2,25 @@ package no.uib.inf101.tetris;
 
 import javax.swing.JFrame;
 
-import no.uib.inf101.tetris.view.SampleView;
+import no.uib.inf101.grid.CellPosition;
+import no.uib.inf101.tetris.model.TetrisBoard;
+import no.uib.inf101.tetris.model.TetrisModel;
+import no.uib.inf101.tetris.view.TetrisView;
 
 
 public class TetrisMain {
   public static final String WINDOW_TITLE = "INF101 Tetris";
   
   public static void main(String[] args) {
-    SampleView view = new SampleView();
+    TetrisBoard board = new TetrisBoard(15, 10);
+    // setting colors of board
+    board.set(new CellPosition(0, 0), 'g');
+    board.set(new CellPosition(0, board.cols() - 1), 'y');
+    board.set(new CellPosition(board.rows() - 1, 0), 'r');
+    board.set(new CellPosition(board.rows() - 1, board.cols() - 1), 'b');
+
+    TetrisModel model = new TetrisModel(board);
+    TetrisView view = new TetrisView(model);
 
     // The JFrame is the "root" application window.
     // We here set som properties of the main window, 
