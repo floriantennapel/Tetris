@@ -23,7 +23,7 @@ public class TetrisController implements KeyListener {
       case KeyEvent.VK_LEFT  -> model.moveTetromino(0, -1);
       case KeyEvent.VK_RIGHT -> model.moveTetromino(0, 1);
       case KeyEvent.VK_DOWN  -> model.moveTetromino(1, 0);
-      case KeyEvent.VK_UP    -> {} // rotate, not implemented yet
+      case KeyEvent.VK_UP    -> model.rotateTetromino();
     }
 
     view.repaint();

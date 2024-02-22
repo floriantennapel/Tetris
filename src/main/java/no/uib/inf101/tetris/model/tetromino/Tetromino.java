@@ -95,6 +95,20 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return shiftedBy(-1, deltaCol);
   }
 
+  public Tetromino rotated() {
+    // 3x3 or 4x4
+    int shapeDimension = shape.length;
+    boolean[][] rotatedShape = new boolean[shapeDimension][shapeDimension];
+
+    for (int i = 0; i < shapeDimension; i++) {
+      for (int j = 0; j < shapeDimension; j++) {
+        rotatedShape[i][j] = shape[j][shapeDimension - i - 1];
+      }
+    }
+
+    return new Tetromino(typeSymbol, rotatedShape, position);
+  }
+
   @Override
   public Iterator<GridCell<Character>> iterator() {
     List<GridCell<Character>> usedCells = new ArrayList<>();

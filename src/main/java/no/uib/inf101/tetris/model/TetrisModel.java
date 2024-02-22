@@ -46,6 +46,19 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     return true;
   }
 
+  //TODO implement super rotation system
+  @Override
+  public boolean rotateTetromino() {
+    Tetromino rotated = currentlyFallingTetromino.rotated();
+
+    if (!isValidPosition(rotated)) {
+      return false;
+    }
+
+    currentlyFallingTetromino = rotated;
+    return true;
+  }
+
   private boolean isValidPosition(Tetromino tetromino) {
     for (GridCell<Character> gc : tetromino) {
       // out of bounds
