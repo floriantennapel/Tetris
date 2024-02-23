@@ -18,4 +18,10 @@ public interface ControllableTetrisModel {
 
   /** current state of game */
   GameState getGameState();
+
+  /** @return milliseconds between every falling movement */
+  int getDeltaTime();
+
+  /** called for every deltaTime */
+  void clockTick();
 }

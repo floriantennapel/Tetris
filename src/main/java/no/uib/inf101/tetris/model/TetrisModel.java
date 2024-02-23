@@ -20,6 +20,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private GameState gameState;
   private int points = 0;
 
+  // milliseconds between every falling movement
+  // increases with level
+  private int deltaTime;
+
   // difficulty of game, increases with amount of points collected
   private int level = 1;
 
@@ -29,6 +33,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     currentlyFallingTetromino = this.tetrominoFactory.getNext().shiftedToTopCenterOf(board);
     gameState = GameState.ACTIVE_GAME;
+    deltaTime = 1000;
   }
 
   @Override
@@ -49,6 +54,18 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   @Override
   public GameState getGameState() {
     return gameState;
+  }
+
+  @Override
+  public int getDeltaTime() {
+    return deltaTime;
+  }
+
+  @Override
+  public void clockTick() {
+    if (!moveTetromino(1, 0)) {
+      addTetrominoToBoardAndClearRows();
+    }
   }
 
   @Override
