@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 public class TetrisView extends JPanel {
   private static final double OUTER_MARGIN = 5.0;
   private static final double INNER_MARGIN = 2.0;
-  private static final int PREFERRED_CELL_SIZE = 30;
+  private static final int PREFERRED_CELL_SIZE = 50;
 
   private final ViewableTetrisModel model;
   private final ColorTheme colorTheme;
