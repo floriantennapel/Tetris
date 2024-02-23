@@ -18,8 +18,8 @@ public class GridTest {
   @Test
   void gridTestGetRowsAndCols() {
     IGrid<Integer> grid = new Grid<>(3, 2);
-    assertEquals(3, grid.rows());
-    assertEquals(2, grid.cols());
+    assertEquals(3, grid.getRows());
+    assertEquals(2, grid.getCols());
   }
   
   @Test
@@ -27,8 +27,8 @@ public class GridTest {
     String defaultValue = "x";
     IGrid<String> grid = new Grid<>(3, 2, defaultValue);
     
-    assertEquals(3, grid.rows());
-    assertEquals(2, grid.cols());
+    assertEquals(3, grid.getRows());
+    assertEquals(2, grid.getCols());
     
     assertEquals("x", grid.get(new CellPosition(0, 0)));
     assertEquals("x", grid.get(new CellPosition(2, 1)));

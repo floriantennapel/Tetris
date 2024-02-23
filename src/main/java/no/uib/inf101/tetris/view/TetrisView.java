@@ -21,8 +21,8 @@ public class TetrisView extends JPanel {
     this.colorTheme = new DefaultColorTheme();
 
     GridDimension dimension = model.getDimension();
-    int height = (int) (dimension.rows() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
-    int width = (int) (dimension.cols() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
+    int height = (int) (dimension.getRows() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
+    int width = (int) (dimension.getCols() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
 
     this.setPreferredSize(new Dimension(width, height));
     this.setBackground(colorTheme.getBackgroundColor());

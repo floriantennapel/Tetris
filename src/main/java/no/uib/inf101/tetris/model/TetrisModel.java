@@ -7,12 +7,21 @@ import no.uib.inf101.tetris.model.tetromino.Tetromino;
 import no.uib.inf101.tetris.model.tetromino.TetrominoFactory;
 import no.uib.inf101.tetris.view.ViewableTetrisModel;
 
+
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel {
+  // given amount of rows removed, how much should score increase, rows removed is index
+  // based on original NES scoring system https://tetris.wiki/Scoring
+  private static final int[] scoring = {0, 40, 100, 300, 1200};
+
   private final TetrisBoard board;
   private final TetrominoFactory tetrominoFactory;
 
   private Tetromino currentlyFallingTetromino;
   private GameState gameState;
+  private int points = 0;
+
+  // difficulty of game, increases with amount of points collected
+  private int level = 1;
 
   public TetrisModel(TetrisBoard board, TetrominoFactory tetrominoFactory) {
     this.board = board;
@@ -82,7 +91,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
 
     currentlyFallingTetromino = dropped;
-    addTetrominoToBoard();
+    addTetrominoToBoardAndClearRows();
   }
 
   private void newTetromino() {
@@ -93,10 +102,16 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
   }
 
-  private void addTetrominoToBoard() {
+  private void addTetrominoToBoardAndClearRows() {
     for (GridCell<Character> gc : currentlyFallingTetromino) {
       board.set(gc.pos(), gc.value());
     }
+
+    int rowsRemoved = board.clearRows();
+    // original NES scoring system https://tetris.wiki/Scoring
+    points += scoring[rowsRemoved] * level;
+
+    System.out.println(points);
 
     newTetromino();
   }
@@ -114,5 +129,13 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
 
     return true;
+  }
+
+  public int getPoints() {
+    return points;
+  }
+
+  public int getLevel() {
+    return level;
   }
 }

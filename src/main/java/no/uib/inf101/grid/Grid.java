@@ -72,12 +72,12 @@ public class Grid<E> implements IGrid<E> {
   }
 
   @Override
-  public int rows() {
+  public int getRows() {
     return rows;
   }
 
   @Override
-  public int cols() {
+  public int getCols() {
     return cols;
   }
 }
