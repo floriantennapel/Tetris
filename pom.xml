@@ -95,7 +95,7 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>${app.main.class}</mainClass>
+                            <mainClass>no.uib.inf101.tetris.TetrisMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

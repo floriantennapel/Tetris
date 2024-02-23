@@ -15,14 +15,6 @@ public class TetrisMain {
   
   public static void main(String[] args) {
     TetrisBoard board = new TetrisBoard(20, 10);
-    // setting colors of board
-    /*
-    board.set(new CellPosition(0, 0), 'g');
-    board.set(new CellPosition(0, board.getCols() - 1), 'y');
-    board.set(new CellPosition(board.getRows() - 1, 0), 'r');
-    board.set(new CellPosition(board.getRows() - 1, board.getCols() - 1), 'b');
-
-     */
 
     TetrominoFactory tetrominoFactory = new RandomTetrominoFactory();
     TetrisModel model = new TetrisModel(board, tetrominoFactory);
