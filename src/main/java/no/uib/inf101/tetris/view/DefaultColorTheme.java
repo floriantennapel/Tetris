@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class DefaultColorTheme implements ColorTheme {
   private final Map<Character, Color> charToColorMap;
+  private final Font gameOverFont;
 
   public DefaultColorTheme() {
     //TODO read colorMappings from file
@@ -24,6 +25,8 @@ public class DefaultColorTheme implements ColorTheme {
     //Map.of has a max limit of 10 pairs
     charToColorMap.put('T', Color.MAGENTA);
     charToColorMap.put('Z', Color.RED);
+
+    gameOverFont = new Font("Arial", Font.BOLD, 80);
 
   }
 
@@ -44,5 +47,21 @@ public class DefaultColorTheme implements ColorTheme {
   @Override
   public Color getBackgroundColor() {
     return null;
+  }
+
+  //TODO check if this function was needed
+  @Override
+  public Font getGameOverFont() {
+    return gameOverFont ;
+  }
+
+  @Override
+  public Color getGameOverForeground() {
+    return new Color(0, 0, 0, 128);
+  }
+
+  @Override
+  public Color getGameOverFontColor() {
+    return Color.LIGHT_GRAY.brighter();
   }
 }

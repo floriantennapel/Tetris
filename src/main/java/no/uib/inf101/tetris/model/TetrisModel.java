@@ -10,13 +10,16 @@ import no.uib.inf101.tetris.view.ViewableTetrisModel;
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel {
   private final TetrisBoard board;
   private final TetrominoFactory tetrominoFactory;
+
   private Tetromino currentlyFallingTetromino;
+  private GameState gameState;
 
   public TetrisModel(TetrisBoard board, TetrominoFactory tetrominoFactory) {
     this.board = board;
     this.tetrominoFactory = tetrominoFactory;
 
     currentlyFallingTetromino = this.tetrominoFactory.getNext().shiftedToTopCenterOf(board);
+    gameState = GameState.ACTIVE_GAME;
   }
 
   @Override
@@ -32,6 +35,11 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   @Override
   public Iterable<GridCell<Character>> getMovingTetrominoTiles() {
     return currentlyFallingTetromino;
+  }
+
+  @Override
+  public GameState getGameState() {
+    return gameState;
   }
 
   @Override
@@ -57,6 +65,40 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     currentlyFallingTetromino = rotated;
     return true;
+  }
+
+  @Override
+  public void dropTetromino() {
+    Tetromino dropped = currentlyFallingTetromino.shiftedBy(0, 0); // logically equal to clone()
+
+    while (isValidPosition(dropped)) {
+      dropped = dropped.shiftedBy(1, 0);
+    }
+
+    // we actually did move, ensuring we don't move up out of screen
+    if (!dropped.equals(currentlyFallingTetromino)) {
+      // moved one too far down
+      dropped = dropped.shiftedBy(-1, 0);
+    }
+
+    currentlyFallingTetromino = dropped;
+    addTetrominoToBoard();
+  }
+
+  private void newTetromino() {
+    currentlyFallingTetromino = tetrominoFactory.getNext().shiftedToTopCenterOf(board);
+
+    if (!isValidPosition(currentlyFallingTetromino)) {
+      gameState = GameState.GAME_OVER;
+    }
+  }
+
+  private void addTetrominoToBoard() {
+    for (GridCell<Character> gc : currentlyFallingTetromino) {
+      board.set(gc.pos(), gc.value());
+    }
+
+    newTetromino();
   }
 
   private boolean isValidPosition(Tetromino tetromino) {

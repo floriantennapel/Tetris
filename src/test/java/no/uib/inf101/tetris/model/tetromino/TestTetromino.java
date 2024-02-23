@@ -89,11 +89,11 @@ public class TestTetromino {
 
   @Test
   public void test4RotationsEndUpSame() {
-    PatternedTetrominoFactory tetrominos = new PatternedTetrominoFactory("IIJJLLOOZZSSTT");
+    PatternedTetrominoFactory tetrominos = new PatternedTetrominoFactory("IJLOZST");
 
     for (int i = 0; i < 7; i++) {
       Tetromino tetro = tetrominos.getNext();
-      Tetromino copy = tetrominos.getNext();
+      Tetromino copy = tetro.shiftedBy(0, 0); // logically equal to clone()
 
       assertEquals(tetro, copy);
 

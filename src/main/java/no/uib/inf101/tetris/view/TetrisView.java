@@ -2,6 +2,7 @@ package no.uib.inf101.tetris.view;
 
 import no.uib.inf101.grid.GridCell;
 import no.uib.inf101.grid.GridDimension;
+import no.uib.inf101.tetris.model.GameState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,6 +53,10 @@ public class TetrisView extends JPanel {
 
     drawCells(g, model.getTilesOnBoard(), posToPixel, colorTheme);
     drawCells(g, model.getMovingTetrominoTiles(), posToPixel, colorTheme);
+
+    if (model.getGameState() == GameState.GAME_OVER) {
+      drawGameOver(g);
+    }
   }
 
   private static void drawCells(
@@ -65,5 +70,23 @@ public class TetrisView extends JPanel {
       g.setColor(colorTheme.getCellColor(gc.value()));
       g.fill(currentCell);
     }
+  }
+
+  private void drawGameOver(Graphics2D g) {
+    int height = this.getHeight();
+    int width = this.getWidth();
+
+    Rectangle2D foreground = new Rectangle2D.Double(0, 0, width, height);
+    g.setColor(colorTheme.getGameOverForeground());
+    g.fill(foreground);
+
+    g.setColor(colorTheme.getGameOverFontColor());
+    double x = width / 2.0;
+    double y = height / 7.0 * 3; // slightly above center
+
+    // for some reason, this single line adds a strange bug
+    g.setFont(colorTheme.getGameOverFont());
+
+    Inf101Graphics.drawCenteredString(g, "Game Over", x, y);
   }
 }

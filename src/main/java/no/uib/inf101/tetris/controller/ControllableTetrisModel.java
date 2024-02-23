@@ -1,5 +1,7 @@
 package no.uib.inf101.tetris.controller;
 
+import no.uib.inf101.tetris.model.GameState;
+
 public interface ControllableTetrisModel {
 
   /** move current piece by given distance
@@ -10,4 +12,10 @@ public interface ControllableTetrisModel {
   /** rotates tetromino counter-clockwise
    * @return if the rotation was successful */
   boolean rotateTetromino();
+
+  /** drops tetromino down as far as it can go */
+  void dropTetromino();
+
+  /** current state of game */
+  GameState getGameState();
 }

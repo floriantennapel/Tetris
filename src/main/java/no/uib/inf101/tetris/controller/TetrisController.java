@@ -1,5 +1,6 @@
 package no.uib.inf101.tetris.controller;
 
+import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.tetris.view.TetrisView;
 
 import java.awt.event.KeyEvent;
@@ -19,11 +20,16 @@ public class TetrisController implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent keyEvent) {
+    if (model.getGameState() != GameState.ACTIVE_GAME) {
+      return;
+    }
+
     switch(keyEvent.getKeyCode()) {
       case KeyEvent.VK_LEFT  -> model.moveTetromino(0, -1);
       case KeyEvent.VK_RIGHT -> model.moveTetromino(0, 1);
       case KeyEvent.VK_DOWN  -> model.moveTetromino(1, 0);
       case KeyEvent.VK_UP    -> model.rotateTetromino();
+      case KeyEvent.VK_SPACE -> model.dropTetromino();
     }
 
     view.repaint();
