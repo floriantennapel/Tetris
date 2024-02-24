@@ -41,7 +41,6 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return new Tetromino(typeSymbol, shape, position.add(deltaPos));
   }
 
-  //TODO write test for this function
   /** @return copy of current tetromino shifted to starting position
    * @throws IllegalArgumentException in case of null argument */
   public Tetromino shiftedToTopCenterOf(GridDimension gridDimension) throws IllegalArgumentException {
