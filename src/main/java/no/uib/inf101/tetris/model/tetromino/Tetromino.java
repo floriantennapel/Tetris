@@ -4,51 +4,16 @@ import no.uib.inf101.grid.CellPosition;
 import no.uib.inf101.grid.GridCell;
 import no.uib.inf101.grid.GridDimension;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class Tetromino implements Iterable<GridCell<Character>> {
   public static final String VALID_SHAPES = "IJLSZTO";
 
-  //TODO read shapes from text file
-  private static final Map<Character, boolean[][]> shapes = new HashMap<>(Map.of(
-      'L', new boolean[][] {
-          {false, false, false},
-          { true,  true,  true},
-          { true, false, false}
-      },
-      'J', new boolean[][] {
-          {false, false, false},
-          { true,  true,  true},
-          {false, false,  true}
-      },
-      'S', new boolean[][] {
-          {false, false, false},
-          {false,  true,  true},
-          { true,  true, false}
-      },
-      'Z', new boolean[][] {
-          {false, false, false},
-          { true,  true, false},
-          {false,  true, true}
-      },
-      'T', new boolean[][] {
-          {false, false, false},
-          { true,  true,  true},
-          {false,  true, false}
-      },
-      'I', new boolean[][] {
-          {false, false, false, false},
-          { true,  true,  true,  true},
-          {false, false, false, false},
-          {false, false, false, false}
-      },
-      'O', new boolean[][] {
-          {false, false, false, false},
-          {false,  true,  true, false},
-          {false,  true,  true, false},
-          {false, false, false, false}
-      }
-  ));
+  private static final String SHAPE_FILE = "tetrominos.txt";
+  private static final Map<Character, boolean[][]> shapes = readShapesFromFile();
 
   private final char typeSymbol;
   private final boolean[][] shape;
@@ -68,9 +33,9 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return new Tetromino(typeSymbol, shapes.get(typeSymbol), new CellPosition(0, 0));
   }
 
-  //TODO change arguments to be CellPosition deltaPos
+
+
   /** copy of current tetromino shifted by deltaRow and deltaCol */
-  // I assume that all arguments should be allowed, since we have no way of knowing if new position is valid
   public Tetromino shiftedBy(int deltaRow, int deltaCol) {
     CellPosition deltaPos = new CellPosition(deltaRow, deltaCol);
 
@@ -90,13 +55,14 @@ public class Tetromino implements Iterable<GridCell<Character>> {
       centerCol -= 1;
     }
 
-    // at start position 0,0 center of tetromino is already 2
+    // at start position 0,0 center of tetromino is already 1
     int tetrominoCenter = 1;
     int deltaCol = centerCol - tetrominoCenter;
 
     return shiftedBy(-1, deltaCol);
   }
 
+  //TODO check if needed in interface
   public Tetromino rotated() {
     // 3x3 or 4x4
     int shapeDimension = shape.length;
@@ -142,7 +108,6 @@ public class Tetromino implements Iterable<GridCell<Character>> {
       return true;
     }
     // using java 17 pattern variable
-    https://docs.oracle.com/en/java/javase/17/language/pattern-matching-instanceof-operator.html#GUID-843060B5-240C-4F47-A7B0-95C42E5B08A7
     if (!(obj instanceof Tetromino other)) {
       return false;
     }
@@ -154,5 +119,42 @@ public class Tetromino implements Iterable<GridCell<Character>> {
   @Override
   public int hashCode() {
     return Objects.hash(typeSymbol, Arrays.deepHashCode(shape), position);
+  }
+
+  private static Map<Character, boolean[][]> readShapesFromFile() {
+    Map<Character, boolean[][]> shapes = new HashMap<>();
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(SHAPE_FILE));
+
+      while (true) {
+        // parse shape information
+        String info = reader.readLine();
+        char symbol = info.charAt(0);
+        int dimension = Character.getNumericValue(info.charAt(2));
+
+        // parse shape
+        boolean[][] shape = new boolean[dimension][dimension];
+        for (int i = 0; i < dimension; i++) {
+          String row = reader.readLine();
+
+          for (int j = 0; j < dimension; j++) {
+            shape[i][j] = row.charAt(j) == '*';
+          }
+        }
+
+        shapes.put(symbol, shape);
+
+        // parse blank line or end loop
+        if (reader.readLine() == null) {
+          break;
+        }
+      }
+
+      reader.close();
+
+      return shapes;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
