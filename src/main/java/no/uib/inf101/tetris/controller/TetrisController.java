@@ -1,5 +1,6 @@
 package no.uib.inf101.tetris.controller;
 
+import no.uib.inf101.tetris.midi.TetrisSong;
 import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.tetris.view.TetrisView;
 
@@ -12,16 +13,19 @@ public class TetrisController implements KeyListener {
   private final ControllableTetrisModel model;
   private final TetrisView view;
   private final Timer timer;
+  private final TetrisSong music;
 
   public TetrisController(ControllableTetrisModel model, TetrisView view) {
     this.model = model;
     this.view = view;
 
     this.timer = new Timer(model.getDeltaTime(), this::clockTick);
+    this.music = new TetrisSong();
 
     view.addKeyListener(this);
     view.setFocusable(true);
     timer.start();
+    music.run();
   }
 
   private void clockTick(ActionEvent e) {
