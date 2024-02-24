@@ -24,7 +24,7 @@ public class TetrisController implements KeyListener {
     timer.start();
   }
 
-  void clockTick(ActionEvent e) {
+  private void clockTick(ActionEvent e) {
     if (model.getGameState() != GameState.ACTIVE_GAME) {
       return;
     }
