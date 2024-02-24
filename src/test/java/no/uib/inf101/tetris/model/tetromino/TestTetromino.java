@@ -67,7 +67,6 @@ public class TestTetromino {
     assertTrue(objs.contains(new GridCell<>(new CellPosition(12, 101), 'S')));
   }
 
-  //TODO write more tests part3
   @Test
   public void testCommutative() {
     Tetromino tetro1 = Tetromino.newTetromino('Z');
@@ -151,9 +150,9 @@ public class TestTetromino {
 
   @Test
   public void test4RotationsEndUpSame() {
-    PatternedTetrominoFactory tetrominos = new PatternedTetrominoFactory("IJLOZST");
+    PatternedTetrominoFactory tetrominos = new PatternedTetrominoFactory(Tetromino.VALID_SHAPES);
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < Tetromino.VALID_SHAPES.length(); i++) {
       Tetromino tetro = tetrominos.getNext();
       Tetromino copy = tetro.shiftedBy(0, 0); // logically equal to clone()
 
@@ -166,4 +165,6 @@ public class TestTetromino {
       assertEquals(tetro, copy);
     }
   }
+
+  //TODO write test for rotation that checks whether piece can be rotated to invalid position
 }
