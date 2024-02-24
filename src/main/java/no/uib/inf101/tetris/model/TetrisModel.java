@@ -11,29 +11,39 @@ import no.uib.inf101.tetris.view.ViewableTetrisModel;
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel {
   // given amount of rows removed, how much should score increase, rows removed is index
   // based on original NES scoring system https://tetris.wiki/Scoring
-  private static final int[] scoring = {0, 40, 100, 300, 1200};
+  private static final int[] SCORING = {0, 40, 100, 300, 1200};
+
+  // level in which timer deltaTime will be 0
+  private static final int FINAL_LEVEL = 10;
+  private static final int START_DELTA_TIME = 1500;
 
   private final TetrisBoard board;
   private final TetrominoFactory tetrominoFactory;
 
+  private Tetromino nextTetromino;
   private Tetromino currentlyFallingTetromino;
   private GameState gameState;
-  private int points = 0;
+  private int score;
+  private int linesCleared;
 
   // milliseconds between every falling movement
   // increases with level
   private int deltaTime;
 
   // difficulty of game, increases with amount of points collected
-  private int level = 1;
+  private int level;
 
   public TetrisModel(TetrisBoard board, TetrominoFactory tetrominoFactory) {
     this.board = board;
     this.tetrominoFactory = tetrominoFactory;
 
     currentlyFallingTetromino = this.tetrominoFactory.getNext().shiftedToTopCenterOf(board);
+    nextTetromino = this.tetrominoFactory.getNext();
     gameState = GameState.ACTIVE_GAME;
-    deltaTime = 1000;
+    deltaTime = START_DELTA_TIME;
+    level = 1;
+    score = 0;
+    linesCleared = 0;
   }
 
   @Override
@@ -112,7 +122,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   }
 
   private void newTetromino() {
-    currentlyFallingTetromino = tetrominoFactory.getNext().shiftedToTopCenterOf(board);
+    currentlyFallingTetromino = nextTetromino.shiftedToTopCenterOf(board);
+    nextTetromino = tetrominoFactory.getNext();
 
     if (!isValidPosition(currentlyFallingTetromino)) {
       gameState = GameState.GAME_OVER;
@@ -124,13 +135,20 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
       board.set(gc.pos(), gc.value());
     }
 
-    int rowsRemoved = board.clearRows();
-    // original NES scoring system https://tetris.wiki/Scoring
-    points += scoring[rowsRemoved] * level;
+    int rowsCleared = board.clearRows();
 
-    System.out.println(points);
-
+    addPointsAndIncrementDifficulty(rowsCleared);
     newTetromino();
+  }
+
+  private void addPointsAndIncrementDifficulty(int rowsCleared) {
+    score += SCORING[rowsCleared] * level;
+    linesCleared += rowsCleared;
+    level = linesCleared / 10 + 1;
+
+    deltaTime = START_DELTA_TIME - (START_DELTA_TIME * (level - 1) / (FINAL_LEVEL - 1));
+
+    System.out.println(score + ", level: " + level + ", deltaTime: " + deltaTime);
   }
 
   private boolean isValidPosition(Tetromino tetromino) {
@@ -148,11 +166,18 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     return true;
   }
 
-  public int getPoints() {
-    return points;
+  @Override
+  public int getScore() {
+    return score;
   }
 
+  @Override
   public int getLevel() {
     return level;
+  }
+
+  @Override
+  public Iterable<GridCell<Character>> getNext() {
+    return nextTetromino;
   }
 }

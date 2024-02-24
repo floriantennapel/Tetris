@@ -16,4 +16,13 @@ public interface ViewableTetrisModel {
 
   /** current state of game */
   GameState getGameState();
+
+  /** get score of game */
+  int getScore();
+
+  /** get current level of game */
+  int getLevel();
+
+  /** get tiles of next tetromino */
+  Iterable<GridCell<Character>> getNext();
 }
