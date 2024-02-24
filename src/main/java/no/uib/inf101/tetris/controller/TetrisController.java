@@ -45,10 +45,10 @@ public class TetrisController implements KeyListener {
     }
 
     switch(keyEvent.getKeyCode()) {
-      case KeyEvent.VK_LEFT  -> model.moveTetromino(0, -1);
-      case KeyEvent.VK_RIGHT -> model.moveTetromino(0, 1);
-      case KeyEvent.VK_DOWN  -> model.moveTetromino(1, 0);
-      case KeyEvent.VK_UP    -> model.rotateTetromino();
+      case KeyEvent.VK_LEFT, KeyEvent.VK_A  -> model.moveTetromino(0, -1);
+      case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> model.moveTetromino(0, 1);
+      case KeyEvent.VK_DOWN, KeyEvent.VK_S  -> model.moveTetromino(1, 0);
+      case KeyEvent.VK_UP, KeyEvent.VK_W    -> model.rotateTetromino();
       case KeyEvent.VK_SPACE -> model.dropTetromino();
     }
 
