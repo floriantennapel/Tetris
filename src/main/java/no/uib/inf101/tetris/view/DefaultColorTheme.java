@@ -27,7 +27,6 @@ public class DefaultColorTheme implements ColorTheme {
     charToColorMap.put('Z', Color.RED);
 
     gameOverFont = new Font("Arial", Font.BOLD, 80);
-
   }
 
   @Override
@@ -49,10 +48,9 @@ public class DefaultColorTheme implements ColorTheme {
     return null;
   }
 
-  //TODO check if this function was needed
   @Override
   public Font getGameOverFont() {
-    return gameOverFont ;
+    return gameOverFont;
   }
 
   @Override

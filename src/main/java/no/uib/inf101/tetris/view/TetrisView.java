@@ -21,8 +21,14 @@ public class TetrisView extends JPanel {
     this.colorTheme = new DefaultColorTheme();
 
     GridDimension dimension = model.getDimension();
-    int height = (int) (dimension.getRows() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
-    int width = (int) (dimension.getCols() * (PREFERRED_CELL_SIZE + INNER_MARGIN) + INNER_MARGIN + 2 * OUTER_MARGIN);
+    int height = (int) (
+        dimension.getRows() * (PREFERRED_CELL_SIZE + INNER_MARGIN)
+            + INNER_MARGIN + 2 * OUTER_MARGIN
+    );
+    int width = (int) (
+        dimension.getCols() * (PREFERRED_CELL_SIZE + INNER_MARGIN)
+            + INNER_MARGIN + 2 * OUTER_MARGIN
+    );
 
     this.setPreferredSize(new Dimension(width, height));
     this.setBackground(colorTheme.getBackgroundColor());
@@ -36,7 +42,8 @@ public class TetrisView extends JPanel {
     drawGame(g2);
   }
 
-  private void drawGame(Graphics2D g) {
+  private void drawGame(Graphics2D g2) {
+    // draw background
     Rectangle2D box = new Rectangle2D.Double(
         OUTER_MARGIN,
         OUTER_MARGIN,
@@ -44,18 +51,22 @@ public class TetrisView extends JPanel {
         this.getHeight() - 2 * OUTER_MARGIN
     );
 
-    g.setColor(colorTheme.getFrameColor());
-    g.fill(box);
+    g2.setColor(colorTheme.getFrameColor());
+    g2.fill(box);
 
     CellPositionToPixelConverter posToPixel = new CellPositionToPixelConverter(
         box, model.getDimension(), INNER_MARGIN
     );
 
-    drawCells(g, model.getTilesOnBoard(), posToPixel, colorTheme);
-    drawCells(g, model.getMovingTetrominoTiles(), posToPixel, colorTheme);
+    // draw tetris board
+    drawCells(g2, model.getTilesOnBoard(), posToPixel, colorTheme);
+
+    // draw moving tetromino on top
+    drawCells(g2, model.getMovingTetrominoTiles(), posToPixel, colorTheme);
+
 
     if (model.getGameState() == GameState.GAME_OVER) {
-      drawGameOver(g);
+      drawGameOver(g2);
     }
   }
 
@@ -63,8 +74,8 @@ public class TetrisView extends JPanel {
       Graphics2D g,
       Iterable<GridCell<Character>> cells,
       CellPositionToPixelConverter posToPixel,
-      ColorTheme colorTheme) {
-
+      ColorTheme colorTheme
+  ) {
     for (GridCell<Character> gc : cells) {
       Rectangle2D currentCell = posToPixel.getBoundsForCell(gc.pos());
       g.setColor(colorTheme.getCellColor(gc.value()));
@@ -84,7 +95,7 @@ public class TetrisView extends JPanel {
     double x = width / 2.0;
     double y = height / 7.0 * 3; // slightly above center
 
-    // for some reason, this single line adds a strange bug
+    // for some reason, this single line adds a slight delay on game-over
     g.setFont(colorTheme.getGameOverFont());
 
     Inf101Graphics.drawCenteredString(g, "Game Over", x, y);
