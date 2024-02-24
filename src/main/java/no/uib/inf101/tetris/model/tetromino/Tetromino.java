@@ -25,7 +25,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     this.position = position;
   }
 
-  protected static Tetromino newTetromino(char typeSymbol) throws IllegalArgumentException {
+  static Tetromino newTetromino(char typeSymbol) throws IllegalArgumentException {
     if (!shapes.containsKey(typeSymbol)) {
       throw new IllegalArgumentException();
     }
@@ -33,9 +33,8 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return new Tetromino(typeSymbol, shapes.get(typeSymbol), new CellPosition(0, 0));
   }
 
-
-
-  /** copy of current tetromino shifted by deltaRow and deltaCol */
+  /**Does not check if new position is within bounds of board
+   * @return copy of current tetromino shifted by deltaRow and deltaCol */
   public Tetromino shiftedBy(int deltaRow, int deltaCol) {
     CellPosition deltaPos = new CellPosition(deltaRow, deltaCol);
 
@@ -43,8 +42,13 @@ public class Tetromino implements Iterable<GridCell<Character>> {
   }
 
   //TODO write test for this function
-  /** copy of current tetromino shifted to starting position */
-  public Tetromino shiftedToTopCenterOf(GridDimension gridDimension) {
+  /** @return copy of current tetromino shifted to starting position
+   * @throws IllegalArgumentException in case of null argument */
+  public Tetromino shiftedToTopCenterOf(GridDimension gridDimension) throws IllegalArgumentException {
+    if (gridDimension == null) {
+      throw new IllegalArgumentException("gridDimension cannot be null");
+    }
+
     int cols = gridDimension.getCols();
 
     int centerCol = cols / 2;
@@ -62,7 +66,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return shiftedBy(-1, deltaCol);
   }
 
-  //TODO check if needed in interface
+  /** @return A copy of this tetromino rotated 90 degrees counter-clockwise */
   public Tetromino rotated() {
     // 3x3 or 4x4
     int shapeDimension = shape.length;
@@ -121,7 +125,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return Objects.hash(typeSymbol, Arrays.deepHashCode(shape), position);
   }
 
-  private static Map<Character, boolean[][]> readShapesFromFile() {
+  private static Map<Character, boolean[][]> readShapesFromFile() throws RuntimeException {
     Map<Character, boolean[][]> shapes = new HashMap<>();
     try {
       BufferedReader reader = new BufferedReader(new FileReader(SHAPE_FILE));
