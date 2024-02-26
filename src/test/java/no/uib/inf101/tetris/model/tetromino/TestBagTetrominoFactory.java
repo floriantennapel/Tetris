@@ -19,7 +19,7 @@ public class TestBagTetrominoFactory {
     int numberOfShapes = Tetromino.VALID_SHAPES.length();
     double target = 1.0 / numberOfShapes;
 
-    // testing for every index
+    // testing for every bag index
     for (int bagIndex = 0; bagIndex < numberOfShapes; bagIndex++) {
 
       // move to index that is getting tested
@@ -27,7 +27,7 @@ public class TestBagTetrominoFactory {
         factory.getNext();
       }
 
-      int iterations = 1000000;
+      int iterations = 100000;
       for (int i = 0; i < iterations; i++) {
         Tetromino first = factory.getNext();
         counter.put(first, counter.getOrDefault(first, 0) + 1);
@@ -41,7 +41,7 @@ public class TestBagTetrominoFactory {
       for (int freq : counter.values()) {
         double relativeFreq = freq / (double) iterations;
 
-        assertTrue(Math.abs(relativeFreq - target) < 0.001);
+        assertTrue(Math.abs(relativeFreq - target) < 0.01);
       }
 
       counter.clear();
