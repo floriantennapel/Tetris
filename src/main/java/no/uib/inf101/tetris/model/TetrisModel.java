@@ -14,8 +14,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private static final int[] SCORING = {0, 40, 100, 300, 1200};
 
   // level in which timer deltaTime will be 0
-  private static final int FINAL_LEVEL = 10;
-  private static final int START_DELTA_TIME = 1500;
+  private static final int FINAL_LEVEL = 20;
+  private static final int START_DELTA_TIME = 1000;
 
   private final TetrisBoard board;
   private final TetrominoFactory tetrominoFactory;
