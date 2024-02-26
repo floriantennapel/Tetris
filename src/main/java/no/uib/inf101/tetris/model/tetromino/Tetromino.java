@@ -4,9 +4,7 @@ import no.uib.inf101.grid.CellPosition;
 import no.uib.inf101.grid.GridCell;
 import no.uib.inf101.grid.GridDimension;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Tetromino implements Iterable<GridCell<Character>> {
@@ -127,7 +125,8 @@ public class Tetromino implements Iterable<GridCell<Character>> {
   private static Map<Character, boolean[][]> readShapesFromFile() throws RuntimeException {
     Map<Character, boolean[][]> shapes = new HashMap<>();
     try {
-      BufferedReader reader = new BufferedReader(new FileReader(SHAPE_FILE));
+      InputStream inputStream = Tetromino.class.getClassLoader().getResourceAsStream(SHAPE_FILE);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
       while (true) {
         // parse shape information
