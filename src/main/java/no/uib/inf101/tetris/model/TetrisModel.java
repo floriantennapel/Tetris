@@ -105,19 +105,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
   @Override
   public void dropTetromino() {
-    Tetromino dropped = currentlyFallingTetromino.shiftedBy(0, 0); // logically equal to clone()
-
-    while (isValidPosition(dropped)) {
-      dropped = dropped.shiftedBy(1, 0);
-    }
-
-    // we actually did move, ensuring we don't move up out of screen
-    if (!dropped.equals(currentlyFallingTetromino)) {
-      // moved one too far down
-      dropped = dropped.shiftedBy(-1, 0);
-    }
-
-    currentlyFallingTetromino = dropped;
+    currentlyFallingTetromino = getDroppedPosition();
     addTetrominoToBoardAndClearRows();
   }
 
@@ -177,5 +165,22 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   @Override
   public Iterable<GridCell<Character>> getNext() {
     return nextTetromino;
+  }
+
+  @Override
+  public Tetromino getDroppedPosition() {
+    Tetromino dropped = currentlyFallingTetromino.shiftedBy(0, 0); // logically equal to clone()
+
+    while (isValidPosition(dropped)) {
+      dropped = dropped.shiftedBy(1, 0);
+    }
+
+    // we actually did move, ensuring we don't move up out of screen
+    if (!dropped.equals(currentlyFallingTetromino)) {
+      // moved one too far down
+      dropped = dropped.shiftedBy(-1, 0);
+    }
+
+    return dropped;
   }
 }

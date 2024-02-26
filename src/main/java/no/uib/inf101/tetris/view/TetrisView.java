@@ -17,10 +17,12 @@ public class TetrisView extends JPanel {
 
   private final ViewableTetrisModel model;
   private final ColorTheme colorTheme;
+  private final ColorTheme shadowColorTheme;
 
   public TetrisView(ViewableTetrisModel model) {
     this.model = model;
     this.colorTheme = new DefaultColorTheme();
+    this.shadowColorTheme = new ShadowColorTheme();
 
     GridDimension dimension = model.getDimension();
     int height = (int) (
@@ -66,6 +68,9 @@ public class TetrisView extends JPanel {
 
     // draw moving tetromino on top
     drawCells(g2, model.getMovingTetrominoTiles(), posToPixel, colorTheme);
+
+    // draw position tetromino will drop to
+    drawCells(g2, model.getDroppedPosition(), posToPixel, shadowColorTheme);
 
     if (model.getGameState() == GameState.GAME_OVER) {
       drawGameOver(g2);

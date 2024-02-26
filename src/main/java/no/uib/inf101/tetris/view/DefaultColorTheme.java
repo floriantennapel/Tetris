@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultColorTheme implements ColorTheme {
+  // package private
   private final Map<Character, Color> charToColorMap;
+
   private final Font gameOverFont;
   private final Font sideFont;
 
