@@ -14,7 +14,7 @@ public class DefaultColorTheme implements ColorTheme {
   public DefaultColorTheme() {
     //TODO read colorMappings from file
     charToColorMap = new HashMap<>(Map.of(
-        '-', hexColor("8a8a8a"),
+        '-', hexColor("8d8d8d"),
         'g', Color.GREEN,
         'y', Color.YELLOW,
         'r', Color.RED,
