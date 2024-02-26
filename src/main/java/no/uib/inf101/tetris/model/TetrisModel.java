@@ -147,8 +147,6 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     level = linesCleared / 10 + 1;
 
     deltaTime = START_DELTA_TIME - (START_DELTA_TIME * (level - 1) / (FINAL_LEVEL - 1));
-
-    System.out.println(score + ", level: " + level + ", deltaTime: " + deltaTime);
   }
 
   private boolean isValidPosition(Tetromino tetromino) {
