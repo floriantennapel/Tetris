@@ -1,0 +1,8 @@
+- 8d8d8d
+I 00bfc1
+J 004ec1
+L ff6500
+O e2f427
+S 0bdb3b
+T ce28da
+Z d82a2a

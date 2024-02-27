@@ -7,9 +7,9 @@ public class ShadowColorTheme extends DefaultColorTheme {
   public Color getCellColor(char cellSymbol) throws IllegalArgumentException {
     Color original = super.getCellColor(cellSymbol);
 
-    float[] components = new float[4];
-    components = original.getColorComponents(components);
+    float[] rgba = new float[4];
+    rgba = original.getColorComponents(rgba);
 
-    return new Color(components[0], components[1], components[2], 0.3f);
+    return new Color(rgba[0], rgba[1], rgba[2], 0.3f);
   }
 }

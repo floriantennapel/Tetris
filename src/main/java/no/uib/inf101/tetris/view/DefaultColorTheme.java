@@ -1,33 +1,22 @@
 package no.uib.inf101.tetris.view;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultColorTheme implements ColorTheme {
-  // package private
   private final Map<Character, Color> charToColorMap;
 
   private final Font gameOverFont;
   private final Font sideFont;
 
   public DefaultColorTheme() {
-    //TODO read colorMappings from file
-    charToColorMap = new HashMap<>(Map.of(
-        '-', hexColor("8d8d8d"),
-        'g', Color.GREEN,
-        'y', Color.YELLOW,
-        'r', Color.RED,
-        'b', Color.BLUE,
-        'I', hexColor("00bfc1"),
-        'J', hexColor("004ec1"),
-        'L', hexColor("ff6500"),
-        'O', hexColor("e2f427"),
-        'S', hexColor("0bdb3b")
-    ));
-    //Map.of has a max limit of 10 pairs
-    charToColorMap.put('T', hexColor("ce28da"));
-    charToColorMap.put('Z', hexColor("d82a2a"));
+    charToColorMap = new HashMap<>();
+    readColorsFromFile("defaultColors.txt");
 
     gameOverFont = new Font("Arial", Font.BOLD, 80);
     sideFont = new Font("Arial", Font.BOLD, 40);
@@ -74,5 +63,25 @@ public class DefaultColorTheme implements ColorTheme {
 
   private Color hexColor(String hexValue) {
     return new Color(Integer.parseInt(hexValue, 16));
+  }
+
+  private void readColorsFromFile(String filename) throws RuntimeException {
+    try {
+      InputStream inputStream = DefaultColorTheme.class.getClassLoader().getResourceAsStream(filename);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+      String line;
+      while ((line = reader.readLine()) != null) {
+        char symbol = line.charAt(0);
+        String colorAsHex = line.substring(2, 8);
+
+        charToColorMap.put(symbol, hexColor(colorAsHex));
+      }
+
+      reader.close();
+      inputStream.close();
+    } catch (IOException | NullPointerException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
