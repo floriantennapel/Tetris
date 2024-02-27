@@ -11,7 +11,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
   public static final String VALID_SHAPES = "IJLSZTO";
 
   private static final String SHAPE_FILE = "tetrominos.txt";
-  private static final Map<Character, boolean[][]> shapes = readShapesFromFile();
+  private static final Map<Character, boolean[][]> SHAPES = readShapesFromFile();
 
   private final char typeSymbol;
   private final boolean[][] shape;
@@ -23,12 +23,13 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     this.position = position;
   }
 
+  //TODO skriv javadoc
   static Tetromino newTetromino(char typeSymbol) throws IllegalArgumentException {
-    if (!shapes.containsKey(typeSymbol)) {
+    if (!SHAPES.containsKey(typeSymbol)) {
       throw new IllegalArgumentException();
     }
 
-    return new Tetromino(typeSymbol, shapes.get(typeSymbol), new CellPosition(0, 0));
+    return new Tetromino(typeSymbol, SHAPES.get(typeSymbol), new CellPosition(0, 0));
   }
 
   /**Does not check if new position is within bounds of board
@@ -128,7 +129,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
       InputStream inputStream = Tetromino.class.getClassLoader().getResourceAsStream(SHAPE_FILE);
       BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-      while (true) {
+      do {
         // parse shape information
         String info = reader.readLine();
         char symbol = info.charAt(0);
@@ -147,10 +148,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
         shapes.put(symbol, shape);
 
         // parse blank line or end loop
-        if (reader.readLine() == null) {
-          break;
-        }
-      }
+      } while (reader.readLine() != null);
 
       reader.close();
 
