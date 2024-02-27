@@ -151,9 +151,10 @@ public class Tetromino implements Iterable<GridCell<Character>> {
       } while (reader.readLine() != null);
 
       reader.close();
+      inputStream.close();
 
       return shapes;
-    } catch (IOException e) {
+    } catch (IOException | NullPointerException e) {
       throw new RuntimeException(e);
     }
   }
