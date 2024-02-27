@@ -72,7 +72,22 @@ public class TestTetrisModel {
   //TODO write this test
   @Test
   public void testDrop() {
+    TetrisBoard board = new TetrisBoard(7, 5);
+    TetrisModel model = new TetrisModel(board, new PatternedTetrominoFactory("TS"));
+    model.dropTetromino();
 
+    assertEquals('T', board.get(new CellPosition(5, 1)));
+    assertEquals('T', board.get(new CellPosition(5, 2)));
+    assertEquals('T', board.get(new CellPosition(5, 3)));
+    assertEquals('T', board.get(new CellPosition(6, 2)));
+
+    // test that pieces stack
+    model.dropTetromino();
+
+    assertEquals('S', board.get(new CellPosition(3, 2)));
+    assertEquals('S', board.get(new CellPosition(3, 3)));
+    assertEquals('S', board.get(new CellPosition(4, 1)));
+    assertEquals('S', board.get(new CellPosition(4, 2)));
   }
 
   //TODO write test for clocktick

@@ -23,22 +23,14 @@ public class TestTetrisBoard {
 
   @Test
   public void testRemoveFullRows() {
-    // Tester at fulle rader fjernes i brettet:
-    // -T
-    // TT
-    // LT
-    // L-
-    // LL
-
-    TetrisBoard board = new TetrisBoard(5, 2);
-    board.set(new CellPosition(0, 1), 'T');
-    board.set(new CellPosition(1, 0), 'T');
-    board.set(new CellPosition(1, 1), 'T');
-    board.set(new CellPosition(2, 1), 'T');
-    board.set(new CellPosition(4, 0), 'L');
-    board.set(new CellPosition(4, 1), 'L');
-    board.set(new CellPosition(3, 0), 'L');
-    board.set(new CellPosition(2, 0), 'L');
+    // Tester at fulle rader fjernes i brettet
+    TetrisBoard board = getTetrisBoardWithContents(new String[] {
+        "-T",
+        "TT",
+        "LT",
+        "L-",
+        "LL"
+    });
 
     assertEquals(3, board.clearRows());
 
@@ -50,5 +42,95 @@ public class TestTetrisBoard {
         "L-"
     });
     assertEquals(expected, board.prettyString());
+  }
+
+  @Test
+  public void testNotRemoveBottomRow() {
+    TetrisBoard board = getTetrisBoardWithContents(new String[] {
+        "OO",
+        "OO",
+        "JJ",
+        "J-",
+        "J-"
+    });
+
+    assertEquals(3, board.clearRows());
+
+    String expected = String.join("\n", new String[] {
+        "--",
+        "--",
+        "--",
+        "J-",
+        "J-"
+    });
+    assertEquals(expected, board.prettyString());
+  }
+
+  @Test
+  public void testOnlyRemovesTopRow() {
+    TetrisBoard board = getTetrisBoardWithContents(new String[] {
+        "JJI",
+        "J-I",
+        "J-I",
+        "--I",
+    });
+
+    assertEquals(1, board.clearRows());
+
+    String expected = String.join("\n", new String[] {
+        "---",
+        "J-I",
+        "J-I",
+        "--I",
+    });
+    assertEquals(expected, board.prettyString());
+  }
+
+  @Test
+  public void testClearsWide() {
+    TetrisBoard board = getTetrisBoardWithContents(new String[] {
+        "--------J",
+        "IIIIIIIIJ",
+        "--ILJ--JJ",
+        "--ILJJJOO",
+        "--ILL--OO"
+    });
+
+    assertEquals(1, board.clearRows());
+
+    String expected = String.join("\n", new String[] {
+        "---------",
+        "--------J",
+        "--ILJ--JJ",
+        "--ILJJJOO",
+        "--ILL--OO"
+    });
+    assertEquals(expected, board.prettyString());
+  }
+
+  // method is package private, so I can reuse in other tests
+
+  /** given a string array representing the model, returns a new TetrisBoard equivalent to the representation
+   *
+   * @param contents non-empty array, where every string is the representation of a row, all rows must have equal length
+   * @return a new TetrisBoard
+   */
+  static TetrisBoard getTetrisBoardWithContents(String[] contents) {
+    int rows = contents.length;
+    int cols = contents[0].length();
+
+    TetrisBoard board = new TetrisBoard(rows, cols);
+
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        char current = contents[i].charAt(j);
+
+        if (current != '-') {
+          board.set(new CellPosition(i, j), current);
+        }
+      }
+    }
+
+    return board;
   }
 }
