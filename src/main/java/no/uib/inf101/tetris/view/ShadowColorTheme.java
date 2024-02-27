@@ -10,6 +10,6 @@ public class ShadowColorTheme extends DefaultColorTheme {
     float[] components = new float[4];
     components = original.getColorComponents(components);
 
-    return new Color(components[0], components[1], components[2], 0.6f);
+    return new Color(components[0], components[1], components[2], 0.3f);
   }
 }

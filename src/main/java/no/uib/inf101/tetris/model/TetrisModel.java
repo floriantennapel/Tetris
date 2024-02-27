@@ -9,7 +9,7 @@ import no.uib.inf101.tetris.view.ViewableTetrisModel;
 
 
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel {
-  // given amount of rows removed, how much should score increase, rows removed is index
+  // given amount of rows cleared, how much should score increase, amount of rows cleared is index
   // based on original NES scoring system https://tetris.wiki/Scoring
   private static final int[] SCORING = {0, 40, 100, 300, 1200};
 
@@ -30,7 +30,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   // increases with level
   private int deltaTime;
 
-  // difficulty of game, increases with amount of points collected
+  // difficulty of game, also scales how many points are given for row clearing
   private int level;
 
   public TetrisModel(TetrisBoard board, TetrominoFactory tetrominoFactory) {
@@ -171,14 +171,13 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   public Tetromino getDroppedPosition() {
     Tetromino dropped = currentlyFallingTetromino.shiftedBy(0, 0); // logically equal to clone()
 
-    while (isValidPosition(dropped)) {
-      dropped = dropped.shiftedBy(1, 0);
-    }
+    while (true) {
+      Tetromino nextPosition = dropped.shiftedBy(1, 0);
+      if (!isValidPosition(nextPosition)) {
+        break;
+      }
 
-    // we actually did move, ensuring we don't move up out of screen
-    if (!dropped.equals(currentlyFallingTetromino)) {
-      // moved one too far down
-      dropped = dropped.shiftedBy(-1, 0);
+      dropped = nextPosition;
     }
 
     return dropped;
