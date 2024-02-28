@@ -91,19 +91,19 @@ public class TetrisView extends JPanel {
   }
 
   private void drawSideMenu(Graphics2D g2) {
-    int x1 = (int) (this.getWidth() - SIDE_MENU_WIDTH - 2 * OUTER_MARGIN);
+    int x1 = (int) (this.getWidth() - SIDE_MENU_WIDTH - 2 * OUTER_MARGIN + 80);
 
     g2.setColor(Color.DARK_GRAY);
     g2.setFont(colorTheme.getSideFont());
 
-    g2.drawString("SCORE", x1 + 80, 80);
-    g2.drawString(getScoreAsString(), x1 + 80, 120);
-    g2.drawString("LEVEL", x1 + 80, 300);
-    g2.drawString(Integer.toString(model.getLevel()), x1 + 80, 340);
+    g2.drawString("SCORE", x1, 80);
+    g2.drawString(getScoreAsString(), x1, 120);
+    g2.drawString("LEVEL", x1, 300);
+    g2.drawString(Integer.toString(model.getLevel()), x1, 340);
 
-    g2.drawString("NEXT PIECE", x1 + 80, 560);
+    g2.drawString("NEXT PIECE", x1, 560);
     TetrisBoard board = new TetrisBoard(4, 4);
-    Rectangle2D box = new Rectangle2D.Double(x1 + 80, 600, PREFERRED_CELL_SIZE * 4, PREFERRED_CELL_SIZE * 4);
+    Rectangle2D box = new Rectangle2D.Double(x1 + 20, 600, PREFERRED_CELL_SIZE * 4, PREFERRED_CELL_SIZE * 4);
     CellPositionToPixelConverter posToPixel = new CellPositionToPixelConverter(box, board, INNER_MARGIN);
     drawCells(g2, model.getNext(), posToPixel, colorTheme);
   }
