@@ -126,7 +126,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
   private static Map<Character, boolean[][]> readShapesFromFile() throws RuntimeException {
     Map<Character, boolean[][]> shapes = new HashMap<>();
     try {
-      InputStream inputStream = Tetromino.class.getClassLoader().getResourceAsStream(SHAPE_FILE);
+      InputStream inputStream = Tetromino.class.getResourceAsStream(SHAPE_FILE);
       BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
       do {

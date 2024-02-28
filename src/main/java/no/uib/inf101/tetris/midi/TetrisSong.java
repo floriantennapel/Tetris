@@ -18,7 +18,7 @@ public class TetrisSong implements Runnable {
 
     @Override
     public void run() {
-        InputStream song = TetrisSong.class.getClassLoader().getResourceAsStream(TETRISMUSIC);
+        InputStream song = TetrisSong.class.getResourceAsStream(TETRISMUSIC);
         this.doPlayMidi(song, true);
     }
 

@@ -23,7 +23,7 @@ public class DefaultColorTheme implements ColorTheme {
   @Override
   public Color getCellColor(char cellSymbol) throws IllegalArgumentException {
     if (!charToColorMap.containsKey(cellSymbol)) {
-      throw new IllegalArgumentException("Invalid tetrominoSymbol");
+      throw new IllegalArgumentException("Invalid tetromino symbol");
     }
 
     return charToColorMap.get(cellSymbol);
@@ -65,7 +65,7 @@ public class DefaultColorTheme implements ColorTheme {
 
   private void readColorsFromFile(String filename) throws RuntimeException {
     try {
-      InputStream inputStream = DefaultColorTheme.class.getClassLoader().getResourceAsStream(filename);
+      InputStream inputStream = DefaultColorTheme.class.getResourceAsStream(filename);
       BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
       String line;
