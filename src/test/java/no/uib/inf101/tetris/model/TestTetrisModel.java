@@ -68,8 +68,6 @@ public class TestTetrisModel {
     assertFalse(model.moveTetromino(0, -1));
   }
 
-
-  //TODO write this test
   @Test
   public void testDrop() {
     TetrisBoard board = new TetrisBoard(7, 5);
@@ -90,5 +88,32 @@ public class TestTetrisModel {
     assertEquals('S', board.get(new CellPosition(4, 2)));
   }
 
-  //TODO write test for clocktick
+  @Test
+  public void testClockTick() {
+    TetrisBoard board = new TetrisBoard(3, 5);
+    TetrisModel model = new TetrisModel(board, new PatternedTetrominoFactory("T"));
+
+    model.clockTick();
+
+    // checking that piece moved
+    List<GridCell<Character>> objs = new ArrayList<>();
+    for (GridCell<Character> gc : model.getMovingTetrominoTiles()) {
+      objs.add(gc);
+    }
+
+    assertEquals(4, objs.size());
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(1, 1), 'T')));
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(1, 2), 'T')));
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(1, 3), 'T')));
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(2, 2), 'T')));
+
+    model.clockTick();
+    // checking that next clocktick adds piece to board
+    String expected = String.join("\n", new String[] {
+        "-----",
+        "-TTT-",
+        "--T--"
+    });
+    assertEquals(expected, board.prettyString());
+  }
 }
