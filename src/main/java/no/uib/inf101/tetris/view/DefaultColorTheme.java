@@ -10,14 +10,12 @@ import java.util.Map;
 
 public class DefaultColorTheme implements ColorTheme {
   private final Map<Character, Color> charToColorMap;
-
   private final Font gameOverFont;
   private final Font sideFont;
 
   public DefaultColorTheme() {
     charToColorMap = new HashMap<>();
     readColorsFromFile("defaultColors.txt");
-
     gameOverFont = new Font("Arial", Font.BOLD, 80);
     sideFont = new Font("Arial", Font.BOLD, 40);
   }
@@ -25,7 +23,7 @@ public class DefaultColorTheme implements ColorTheme {
   @Override
   public Color getCellColor(char cellSymbol) throws IllegalArgumentException {
     if (!charToColorMap.containsKey(cellSymbol)) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Invalid tetrominoSymbol");
     }
 
     return charToColorMap.get(cellSymbol);
