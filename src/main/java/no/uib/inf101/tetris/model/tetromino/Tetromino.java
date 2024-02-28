@@ -23,7 +23,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     this.position = position;
   }
 
-  //TODO skriv javadoc
+  /** constructor for Tetromino, actual constructor is private */
   static Tetromino newTetromino(char typeSymbol) throws IllegalArgumentException {
     if (!SHAPES.containsKey(typeSymbol)) {
       throw new IllegalArgumentException();
@@ -40,7 +40,7 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return new Tetromino(typeSymbol, shape, position.add(deltaPos));
   }
 
-  /** @return copy of current tetromino shifted to starting position
+  /** @return copy of current tetromino shifted to starting position (centered vertically at top of screen)
    * @throws IllegalArgumentException in case of null argument */
   public Tetromino shiftedToTopCenterOf(GridDimension gridDimension) throws IllegalArgumentException {
     if (gridDimension == null) {

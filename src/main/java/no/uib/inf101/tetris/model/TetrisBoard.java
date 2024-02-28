@@ -11,7 +11,6 @@ public class TetrisBoard extends Grid<Character> {
     super(rows, cols, '-');
   }
 
-  //TODO write tests and check if everything works
   /** clear rows that are filled, and move all above rows down
    * @return number of rows that were removed */
   public int clearRows() {
@@ -77,6 +76,9 @@ public class TetrisBoard extends Grid<Character> {
     }
   }
 
+  // does the row only contain the characters from the input string?
+  // For instance, characters = "-" checks if row is empty
+  // characters = Tetromino.VALID_SHAPES checks if row is filled
   private boolean rowHasOnly(String characters, int row) throws IndexOutOfBoundsException {
     for (int col = 0; col < getCols(); col++) {
       CellPosition pos = new CellPosition(row, col);
@@ -91,7 +93,7 @@ public class TetrisBoard extends Grid<Character> {
     return true;
   }
 
-  public String prettyString() {
+  String prettyString() {
     StringBuilder s = new StringBuilder();
     int charCount = 1;
 
