@@ -13,14 +13,14 @@ public interface ColorTheme {
   Color getBackgroundColor();
 
   /** font of game over text */
-  Font getGameOverFont();
+  Font getBigFont();
 
   /** font of screen information */
-  Font getSideFont();
+  Font getMediumFont();
 
   /** color and opacity of pause screen */
   Color getPauseForeground();
 
   /** font-color of game-over message */
-  Color getGameOverFontColor();
+  Color getBrightFontColor();
 }

@@ -12,14 +12,14 @@ public class DefaultColorTheme implements ColorTheme {
   private static final String COLOR_FILE = "defaultColors.txt";
 
   private final Map<Character, Color> charToColorMap;
-  private final Font gameOverFont;
-  private final Font sideFont;
+  private final Font bigFont;
+  private final Font mediumFont;
 
   public DefaultColorTheme() {
     charToColorMap = new HashMap<>();
     readColorsFromFile();
-    gameOverFont = new Font("Arial", Font.BOLD, 80);
-    sideFont = new Font("Arial", Font.BOLD, 40);
+    bigFont = new Font("Arial", Font.BOLD, 80);
+    mediumFont = new Font("Arial", Font.BOLD, 40);
   }
 
   @Override
@@ -42,13 +42,13 @@ public class DefaultColorTheme implements ColorTheme {
   }
 
   @Override
-  public Font getGameOverFont() {
-    return gameOverFont;
+  public Font getBigFont() {
+    return bigFont;
   }
 
   @Override
-  public Font getSideFont() {
-    return sideFont;
+  public Font getMediumFont() {
+    return mediumFont;
   }
 
   @Override
@@ -57,7 +57,7 @@ public class DefaultColorTheme implements ColorTheme {
   }
 
   @Override
-  public Color getGameOverFontColor() {
+  public Color getBrightFontColor() {
     return Color.LIGHT_GRAY.brighter();
   }
 

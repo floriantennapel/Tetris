@@ -97,7 +97,7 @@ public class TetrisView extends JPanel {
     int x1 = (int) (this.getWidth() - SIDE_MENU_WIDTH - 2 * OUTER_MARGIN + 80);
 
     g2.setColor(Color.DARK_GRAY);
-    g2.setFont(colorTheme.getSideFont());
+    g2.setFont(colorTheme.getMediumFont());
 
     g2.drawString("SCORE", x1, 80);
     g2.drawString(getScoreAsString(), x1, 120);
@@ -129,12 +129,12 @@ public class TetrisView extends JPanel {
     g2.setColor(colorTheme.getPauseForeground());
     g2.fillRect(0, 0, width, height);
 
-    g2.setColor(colorTheme.getGameOverFontColor());
+    g2.setColor(colorTheme.getBrightFontColor());
     double x = width / 2.0;
     double y = height / 7.0 * 3; // slightly above center
 
     // for some reason, this single line adds a slight delay on game-over
-    g2.setFont(colorTheme.getGameOverFont());
+    g2.setFont(colorTheme.getBigFont());
 
     Inf101Graphics.drawCenteredString(g2, "Game Over", x, y);
   }
@@ -146,7 +146,8 @@ public class TetrisView extends JPanel {
     g2.setColor(colorTheme.getPauseForeground());
     g2.fillRect(0, 0, width, height);
 
-    g2.setFont(colorTheme.getGameOverFont());
+    g2.setFont(colorTheme.getBigFont());
+    g2.setColor(colorTheme.getBrightFontColor());
     double x = width / 2.0;
     double y = height / 7.0 * 3; // slightly above center
     Inf101Graphics.drawCenteredString(g2, "Game Paused", x, y);
