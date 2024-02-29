@@ -75,6 +75,9 @@ public class TetrisView extends JPanel {
     if (model.getGameState() == GameState.GAME_OVER) {
       drawGameOver(g2);
     }
+    if (model.getGameState() == GameState.PAUSED) {
+      drawPauseMenu(g2);
+    }
   }
 
   private static void drawCells(
@@ -123,9 +126,8 @@ public class TetrisView extends JPanel {
     int height = this.getHeight();
     int width = this.getWidth();
 
-    Rectangle2D foreground = new Rectangle2D.Double(0, 0, width, height);
-    g2.setColor(colorTheme.getGameOverForeground());
-    g2.fill(foreground);
+    g2.setColor(colorTheme.getPauseForeground());
+    g2.fillRect(0, 0, width, height);
 
     g2.setColor(colorTheme.getGameOverFontColor());
     double x = width / 2.0;
@@ -135,5 +137,19 @@ public class TetrisView extends JPanel {
     g2.setFont(colorTheme.getGameOverFont());
 
     Inf101Graphics.drawCenteredString(g2, "Game Over", x, y);
+  }
+
+  private void drawPauseMenu(Graphics2D g2) {
+    int height = this.getHeight();
+    int width = this.getWidth();
+
+    g2.setColor(colorTheme.getPauseForeground());
+    g2.fillRect(0, 0, width, height);
+
+    g2.setFont(colorTheme.getGameOverFont());
+    double x = width / 2.0;
+    double y = height / 7.0 * 3; // slightly above center
+    Inf101Graphics.drawCenteredString(g2, "Game Paused", x, y);
+
   }
 }

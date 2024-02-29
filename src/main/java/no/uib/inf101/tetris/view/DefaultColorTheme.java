@@ -52,7 +52,7 @@ public class DefaultColorTheme implements ColorTheme {
   }
 
   @Override
-  public Color getGameOverForeground() {
+  public Color getPauseForeground() {
     return new Color(0, 0, 0, 128);
   }
 

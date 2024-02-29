@@ -17,9 +17,9 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private static final int FINAL_LEVEL = 20;
   private static final int START_DELTA_TIME = 1000;
 
-  private final TetrisBoard board;
   private final TetrominoFactory tetrominoFactory;
 
+  private TetrisBoard board;
   private Tetromino nextTetromino;
   private Tetromino currentlyFallingTetromino;
   private GameState gameState;
@@ -67,6 +67,11 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   }
 
   @Override
+  public void setGameState(GameState gameState) {
+    this.gameState = gameState;
+  }
+
+  @Override
   public int getDeltaTime() {
     return deltaTime;
   }
@@ -76,6 +81,17 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     if (!moveTetromino(1, 0)) {
       addTetrominoToBoardAndClearRows();
     }
+  }
+
+  @Override
+  public void resetGame() {
+    board = new TetrisBoard(board.getRows(), board.getCols());
+
+    gameState = GameState.ACTIVE_GAME;
+    deltaTime = START_DELTA_TIME;
+    level = 1;
+    score = 0;
+    linesCleared = 0;
   }
 
   @Override

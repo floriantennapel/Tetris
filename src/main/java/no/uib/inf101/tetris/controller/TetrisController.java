@@ -44,10 +44,23 @@ public class TetrisController implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent keyEvent) {
-    if (model.getGameState() != GameState.ACTIVE_GAME) {
-      return;
+    if (model.getGameState().equals(GameState.GAME_OVER)) {
+      if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+        model.resetGame();
+      }
     }
 
+    if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+      togglePause();
+    }
+    if (model.getGameState() == GameState.ACTIVE_GAME) {
+      checkMoveKeys(keyEvent);
+    }
+
+    view.repaint();
+  }
+
+  private void checkMoveKeys(KeyEvent keyEvent) {
     switch(keyEvent.getKeyCode()) {
       case KeyEvent.VK_LEFT, KeyEvent.VK_A  -> model.moveTetromino(0, -1);
       case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> model.moveTetromino(0, 1);
@@ -55,8 +68,20 @@ public class TetrisController implements KeyListener {
       case KeyEvent.VK_UP, KeyEvent.VK_W    -> model.rotateTetromino();
       case KeyEvent.VK_SPACE -> model.dropTetromino();
     }
+  }
 
-    view.repaint();
+  private void togglePause() {
+    if (model.getGameState().equals(GameState.GAME_OVER)) {
+      return;
+    }
+
+    GameState currentState = model.getGameState();
+
+    model.setGameState(
+        currentState.equals(GameState.ACTIVE_GAME)
+            ? GameState.PAUSED
+            : GameState.ACTIVE_GAME
+    );
   }
 
 

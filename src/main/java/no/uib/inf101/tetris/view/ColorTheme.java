@@ -18,8 +18,8 @@ public interface ColorTheme {
   /** font of screen information */
   Font getSideFont();
 
-  /** color and opacity of game-over screen */
-  Color getGameOverForeground();
+  /** color and opacity of pause screen */
+  Color getPauseForeground();
 
   /** font-color of game-over message */
   Color getGameOverFontColor();
