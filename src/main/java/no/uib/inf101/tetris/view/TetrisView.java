@@ -112,7 +112,7 @@ public class TetrisView extends JPanel {
     int score = model.getScore();
     String s = Integer.toString(score);
 
-    while (s.length() < 6) {
+    while (s.length() < 7) {
       s = "0" + s;
     }
 

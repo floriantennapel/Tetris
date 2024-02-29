@@ -9,13 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultColorTheme implements ColorTheme {
+  private static final String COLOR_FILE = "defaultColors.txt";
+
   private final Map<Character, Color> charToColorMap;
   private final Font gameOverFont;
   private final Font sideFont;
 
   public DefaultColorTheme() {
     charToColorMap = new HashMap<>();
-    readColorsFromFile("defaultColors.txt");
+    readColorsFromFile();
     gameOverFont = new Font("Arial", Font.BOLD, 80);
     sideFont = new Font("Arial", Font.BOLD, 40);
   }
@@ -63,17 +65,17 @@ public class DefaultColorTheme implements ColorTheme {
     return new Color(Integer.parseInt(hexValue, 16));
   }
 
-  private void readColorsFromFile(String filename) throws RuntimeException {
+  private void readColorsFromFile() throws RuntimeException {
     try {
-      InputStream inputStream = DefaultColorTheme.class.getResourceAsStream(filename);
+      InputStream inputStream = DefaultColorTheme.class.getResourceAsStream(COLOR_FILE);
       BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
       String line;
       while ((line = reader.readLine()) != null) {
         char symbol = line.charAt(0);
-        String colorAsHex = line.substring(2, 8);
+        String color = line.substring(2, 8);
 
-        charToColorMap.put(symbol, hexColor(colorAsHex));
+        charToColorMap.put(symbol, hexColor(color));
       }
 
       reader.close();

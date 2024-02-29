@@ -49,6 +49,7 @@ public class TestBagTetrominoFactory {
   }
 
 
+  // check that bags do not contain duplicates
   @Test
   public void testValidBag() {
     TetrominoFactory factory = new BagTetrominoFactory();
