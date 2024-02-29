@@ -97,12 +97,12 @@ public class TetrisView extends JPanel {
     int x1 = (int) (this.getWidth() - SIDE_MENU_WIDTH - 2 * OUTER_MARGIN + 80);
 
     g2.setColor(Color.DARK_GRAY);
-    g2.setFont(colorTheme.getMediumFont());
+    g2.setFont(colorTheme.getFont("medium"));
 
     g2.drawString("SCORE", x1, 80);
     g2.drawString(getScoreAsString(), x1, 120);
     g2.drawString("LEVEL", x1, 300);
-    g2.drawString(Integer.toString(model.getLevel()), x1, 340);
+    g2.drawString(Integer.toString(model.getLevel()), x1 + 10, 340);
 
     g2.drawString("NEXT PIECE", x1, 560);
     TetrisBoard board = new TetrisBoard(4, 4);
@@ -134,9 +134,11 @@ public class TetrisView extends JPanel {
     double y = height / 7.0 * 3; // slightly above center
 
     // for some reason, this single line adds a slight delay on game-over
-    g2.setFont(colorTheme.getBigFont());
-
+    g2.setFont(colorTheme.getFont("big"));
     Inf101Graphics.drawCenteredString(g2, "Game Over", x, y);
+
+    g2.setFont(colorTheme.getFont("small"));
+    Inf101Graphics.drawCenteredString(g2, "Press <Enter> to start a new game", x, y + 100);
   }
 
   private void drawPauseMenu(Graphics2D g2) {
@@ -146,11 +148,14 @@ public class TetrisView extends JPanel {
     g2.setColor(colorTheme.getPauseForeground());
     g2.fillRect(0, 0, width, height);
 
-    g2.setFont(colorTheme.getBigFont());
+    g2.setFont(colorTheme.getFont("big"));
     g2.setColor(colorTheme.getBrightFontColor());
     double x = width / 2.0;
     double y = height / 7.0 * 3; // slightly above center
-    Inf101Graphics.drawCenteredString(g2, "Game Paused", x, y);
+    Inf101Graphics.drawCenteredString(g2, "Game paused", x, y);
+
+    g2.setFont(colorTheme.getFont("small"));
+    Inf101Graphics.drawCenteredString(g2, "Press <Esc> to resume game", x, y + 100);
 
   }
 }

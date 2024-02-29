@@ -10,16 +10,19 @@ import java.util.Map;
 
 public class DefaultColorTheme implements ColorTheme {
   private static final String COLOR_FILE = "defaultColors.txt";
+  private static final String FONT_FAMILY = "Arial";
 
   private final Map<Character, Color> charToColorMap;
   private final Font bigFont;
   private final Font mediumFont;
+  private final Font smallFont;
 
   public DefaultColorTheme() {
     charToColorMap = new HashMap<>();
     readColorsFromFile();
-    bigFont = new Font("Arial", Font.BOLD, 80);
-    mediumFont = new Font("Arial", Font.BOLD, 40);
+    bigFont = new Font(FONT_FAMILY, Font.BOLD, 80);
+    mediumFont = new Font(FONT_FAMILY, Font.BOLD, 40);
+    smallFont = new Font(FONT_FAMILY, Font.BOLD, 30);
   }
 
   @Override
@@ -42,13 +45,13 @@ public class DefaultColorTheme implements ColorTheme {
   }
 
   @Override
-  public Font getBigFont() {
-    return bigFont;
-  }
-
-  @Override
-  public Font getMediumFont() {
-    return mediumFont;
+  public Font getFont(String size) {
+    return switch (size) {
+      case "big" -> bigFont;
+      case "medium" -> mediumFont;
+      case "small" -> smallFont;
+      default -> mediumFont;
+    };
   }
 
   @Override

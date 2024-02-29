@@ -12,11 +12,13 @@ public interface ColorTheme {
   /** @return color of background, can be null */
   Color getBackgroundColor();
 
-  /** font of game over text */
-  Font getBigFont();
+  /** Returns the font, either big, medium or small, defaults to medium
+   *
+   * @param size either big, medium og small
+   * @return Font that a Graphics2D object can be set to
+   */
+  Font getFont(String size);
 
-  /** font of screen information */
-  Font getMediumFont();
 
   /** color and opacity of pause screen */
   Color getPauseForeground();
