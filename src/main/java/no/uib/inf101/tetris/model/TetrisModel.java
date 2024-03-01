@@ -7,6 +7,8 @@ import no.uib.inf101.tetris.model.tetromino.Tetromino;
 import no.uib.inf101.tetris.model.tetromino.TetrominoFactory;
 import no.uib.inf101.tetris.view.ViewableTetrisModel;
 
+import java.io.*;
+
 
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel {
   // given amount of rows cleared, how much should score increase, amount of rows cleared is index
@@ -17,6 +19,9 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private static final int FINAL_LEVEL = 20;
   private static final int START_DELTA_TIME = 1000;
 
+  // path must be absolute to work correctly when building project
+  private static final String HIGH_SCORE_FILE = "src/main/resources/no/uib/inf101/tetris/model/highscore.txt";
+
   private final TetrominoFactory tetrominoFactory;
 
   private TetrisBoard board;
@@ -25,6 +30,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private GameState gameState;
   private int score;
   private int linesCleared;
+  private int highScore;
 
   // milliseconds between every falling movement
   // increases with level
@@ -44,6 +50,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     level = 1;
     score = 0;
     linesCleared = 0;
+
+    highScore = readHighScore();
   }
 
   @Override
@@ -92,6 +100,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     level = 1;
     score = 0;
     linesCleared = 0;
+    highScore = readHighScore();
   }
 
   @Override
@@ -131,6 +140,9 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     if (!isValidPosition(currentlyFallingTetromino)) {
       gameState = GameState.GAME_OVER;
+      if (score > highScore) {
+        writeHighScore();
+      }
     }
   }
 
@@ -197,5 +209,44 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
 
     return dropped;
+  }
+
+  @Override
+  public int getHighScore() {
+    return highScore;
+  }
+
+  private int readHighScore() {
+    try {
+      BufferedReader reader = new BufferedReader(
+          new FileReader(HIGH_SCORE_FILE)
+      );
+
+      int highScore = Integer.parseInt(reader.readLine());
+
+      reader.close();
+      return highScore;
+    } catch (IOException e) {
+      System.err.println(e);
+      return 0;
+    }
+  }
+
+  private void writeHighScore() {
+    try {
+      File file = new File(HIGH_SCORE_FILE);
+      if (file.exists()) {
+        file.delete();
+      }
+
+      file.createNewFile();
+
+      PrintStream writer = new PrintStream(file);
+      writer.println(score);
+
+      writer.close();
+    } catch (IOException | NullPointerException e ) {
+      throw new RuntimeException(e);
+    }
   }
 }

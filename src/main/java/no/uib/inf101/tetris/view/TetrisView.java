@@ -99,10 +99,14 @@ public class TetrisView extends JPanel {
     g2.setColor(Color.DARK_GRAY);
     g2.setFont(colorTheme.getFont("medium"));
 
-    g2.drawString("SCORE", x1, 80);
-    g2.drawString(getScoreAsString(), x1, 120);
-    g2.drawString("LEVEL", x1, 300);
-    g2.drawString(Integer.toString(model.getLevel()), x1 + 10, 340);
+    g2.drawString("HIGH SCORE", x1, 80);
+    g2.drawString(getScoreAsString(model.getHighScore()), x1, 120);
+
+    g2.drawString("SCORE", x1, 200);
+    g2.drawString(getScoreAsString(model.getScore()), x1, 240);
+
+    g2.drawString("LEVEL", x1, 400);
+    g2.drawString(Integer.toString(model.getLevel()), x1 + 10, 440);
 
     g2.drawString("NEXT PIECE", x1, 560);
     TetrisBoard board = new TetrisBoard(4, 4);
@@ -111,8 +115,7 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getNext(), posToPixel, colorTheme);
   }
 
-  private String getScoreAsString() {
-    int score = model.getScore();
+  private String getScoreAsString(int score) {
     String s = Integer.toString(score);
 
     while (s.length() < 7) {

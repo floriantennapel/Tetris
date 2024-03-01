@@ -29,4 +29,7 @@ public interface ViewableTetrisModel {
 
   /** get position of piece as if it has been dropped */
   Tetromino getDroppedPosition();
+
+  /** get high score, this is read from a file, if there is an error it defaults to 0 */
+  int getHighScore();
 }
