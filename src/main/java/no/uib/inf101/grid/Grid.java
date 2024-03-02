@@ -11,6 +11,10 @@ public class Grid<E> implements IGrid<E> {
   private final int cols;
 
   public Grid(int rows, int cols, E defaultValue) {
+    if (rows <= 0 || cols <= 0) {
+      throw new IllegalArgumentException("cannot have zero or less rows or cols");
+    }
+
     this.rows = rows;
     this.cols = cols;
 
@@ -43,13 +47,6 @@ public class Grid<E> implements IGrid<E> {
 
   @Override
   public E get(CellPosition pos) throws IndexOutOfBoundsException {
-    // det står ikke i javaDocen at funksjonen kan kaste indexOutOfBoundsException, så egentlig burde dette være med...
-    /*
-    if (!positionIsOnGrid(pos)) {
-      System.err.println("method get in class Grid: invalid CellPosition");
-      return null;
-    }*/
-
     return grid.get(pos.row()).get(pos.col()).value();
   }
 
