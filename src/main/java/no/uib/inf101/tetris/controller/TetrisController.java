@@ -65,17 +65,17 @@ public class TetrisController implements KeyListener {
       case KeyEvent.VK_LEFT, KeyEvent.VK_A  -> model.moveTetromino(0, -1);
       case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> model.moveTetromino(0, 1);
       case KeyEvent.VK_DOWN, KeyEvent.VK_S  -> model.moveTetromino(1, 0);
-      case KeyEvent.VK_UP, KeyEvent.VK_W    -> model.rotateTetromino();
+      case KeyEvent.VK_UP, KeyEvent.VK_W    -> model.rotateTetromino(true);
+      case KeyEvent.VK_SHIFT, KeyEvent.VK_E -> model.rotateTetromino(false);
       case KeyEvent.VK_SPACE -> model.dropTetromino();
     }
   }
 
   private void togglePause() {
-    if (model.getGameState().equals(GameState.GAME_OVER)) {
+    GameState currentState = model.getGameState();
+    if (currentState.equals(GameState.GAME_OVER)) {
       return;
     }
-
-    GameState currentState = model.getGameState();
 
     model.setGameState(
         currentState.equals(GameState.ACTIVE_GAME)

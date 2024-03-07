@@ -12,8 +12,9 @@ public interface ControllableTetrisModel {
   boolean moveTetromino(int deltaRow, int deltaCol);
 
   /** rotates tetromino counter-clockwise
+   * @param clockwise if the rotation should be made clockwise or counter-clockwise
    * @return if the rotation was successful */
-  boolean rotateTetromino();
+  boolean rotateTetromino(boolean clockwise);
 
   /** drops tetromino down, adds piece to model and gets new falling tetromino */
   void dropTetromino();

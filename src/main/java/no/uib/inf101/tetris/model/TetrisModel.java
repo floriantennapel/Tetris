@@ -1,5 +1,6 @@
 package no.uib.inf101.tetris.model;
 
+import no.uib.inf101.grid.CellPosition;
 import no.uib.inf101.grid.GridCell;
 import no.uib.inf101.grid.GridDimension;
 import no.uib.inf101.tetris.controller.ControllableTetrisModel;
@@ -8,6 +9,8 @@ import no.uib.inf101.tetris.model.tetromino.TetrominoFactory;
 import no.uib.inf101.tetris.view.ViewableTetrisModel;
 
 import java.io.*;
+import java.util.List;
+import java.util.Optional;
 
 
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel {
@@ -115,16 +118,39 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     return true;
   }
 
-  //TODO implement super rotation system
-  @Override
-  public boolean rotateTetromino() {
-    Tetromino rotated = currentlyFallingTetromino.rotated();
+  private Optional<Tetromino> wallKick(Tetromino rotated) {
+    if (isValidPosition(rotated)) {
+      return Optional.of(rotated);
+    }
 
-    if (!isValidPosition(rotated)) {
+    List<CellPosition> shiftPositions = List.of(
+        new CellPosition(0, 1), new CellPosition(0, 2),
+        new CellPosition(0, -1), new CellPosition(0, -2),
+        new CellPosition(1, 0), new CellPosition(2, 0)
+    );
+
+    for (CellPosition cp : shiftPositions) {
+      Tetromino kicked = rotated.shiftedBy(cp.row(), cp.col());
+      if (isValidPosition(kicked)) {
+        return Optional.of(kicked);
+      }
+    }
+
+    return Optional.empty();
+  }
+
+  @Override
+  public boolean rotateTetromino(boolean clockwise) {
+    Tetromino rotated = currentlyFallingTetromino.rotated(clockwise);
+
+    // if the current rotated position is already valid, this method will do nothing
+    Optional<Tetromino> finalRotatedPos = wallKick(rotated);
+
+    if (finalRotatedPos.isEmpty()) {
       return false;
     }
 
-    currentlyFallingTetromino = rotated;
+    currentlyFallingTetromino = finalRotatedPos.get();
     return true;
   }
 

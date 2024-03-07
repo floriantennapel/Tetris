@@ -64,15 +64,20 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return shiftedBy(-1, deltaCol);
   }
 
-  /** @return A copy of this tetromino rotated 90 degrees counter-clockwise */
-  public Tetromino rotated() {
+  /** @param clockwise should the rotation be clockwise or counter-clockwise
+   *  @return A copy of this tetromino rotated 90 degrees */
+  public Tetromino rotated(boolean clockwise) {
     // 3x3 or 4x4
     int shapeDimension = shape.length;
     boolean[][] rotatedShape = new boolean[shapeDimension][shapeDimension];
 
     for (int i = 0; i < shapeDimension; i++) {
       for (int j = 0; j < shapeDimension; j++) {
-        rotatedShape[i][j] = shape[j][shapeDimension - i - 1];
+        if (clockwise) {
+          rotatedShape[i][j] = shape[shapeDimension - j - 1][i];
+        } else {
+          rotatedShape[i][j] = shape[j][shapeDimension - i - 1];
+        }
       }
     }
 
