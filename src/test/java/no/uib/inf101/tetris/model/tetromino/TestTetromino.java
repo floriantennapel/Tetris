@@ -132,7 +132,7 @@ public class TestTetromino {
   @Test
   public void testRotationT() {
     Tetromino tetro = Tetromino.newTetromino('T');
-    tetro = tetro.rotated();
+    tetro = tetro.rotated(false);
 
     // Collect which objects are iterated through
     List<GridCell<Character>> objs = new ArrayList<>();
@@ -159,7 +159,7 @@ public class TestTetromino {
       assertEquals(tetro, copy);
 
       for (int j = 0; j < 4; j++) {
-        copy = copy.rotated();
+        copy = copy.rotated(true);
       }
 
       assertEquals(tetro, copy);
