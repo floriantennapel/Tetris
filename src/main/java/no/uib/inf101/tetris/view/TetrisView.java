@@ -12,8 +12,7 @@ import java.awt.geom.Rectangle2D;
 public class TetrisView extends JPanel {
   private static final double OUTER_MARGIN = 5.0;
   private static final double INNER_MARGIN = 2.0;
-  private static final int PREFERRED_CELL_SIZE = 50;
-  private static final int SIDE_MENU_WIDTH = 350;
+  private static final int PREFERRED_CELL_SIZE = 30;
 
   private final ViewableTetrisModel model;
   private final ColorTheme colorTheme;
@@ -29,12 +28,15 @@ public class TetrisView extends JPanel {
         dimension.getRows() * (PREFERRED_CELL_SIZE + INNER_MARGIN)
             + INNER_MARGIN + 2 * OUTER_MARGIN
     );
+
     int width = (int) (
         dimension.getCols() * (PREFERRED_CELL_SIZE + INNER_MARGIN)
-            + INNER_MARGIN + 2 * OUTER_MARGIN + SIDE_MENU_WIDTH
+            + INNER_MARGIN + 2 * OUTER_MARGIN
     );
 
-    this.setPreferredSize(new Dimension(width, height));
+    int sidemenuWidth = width * 2 / 3;
+
+    this.setPreferredSize(new Dimension(width + sidemenuWidth, height));
     this.setBackground(colorTheme.getBackgroundColor());
   }
 
@@ -52,7 +54,7 @@ public class TetrisView extends JPanel {
     Rectangle2D box = new Rectangle2D.Double(
         OUTER_MARGIN,
         OUTER_MARGIN,
-        this.getWidth() - 3 * OUTER_MARGIN - SIDE_MENU_WIDTH,
+        this.getWidth() * 3 / 5.0 - 2 * OUTER_MARGIN,
         this.getHeight() - 2 * OUTER_MARGIN
     );
 
@@ -94,24 +96,38 @@ public class TetrisView extends JPanel {
   }
 
   private void drawSideMenu(Graphics2D g2) {
-    int x1 = (int) (this.getWidth() - SIDE_MENU_WIDTH - 2 * OUTER_MARGIN + 80);
+    int width = this.getWidth();
+    int height = this.getHeight();
+
+    double centerWidth = width * 4 / 5.0;
 
     g2.setColor(Color.DARK_GRAY);
-    g2.setFont(colorTheme.getFont("medium"));
+    g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 21));
 
-    g2.drawString("HIGH SCORE", x1, 80);
-    g2.drawString(getScoreAsString(model.getHighScore()), x1, 120);
+    Inf101Graphics.drawCenteredString(g2, "HIGH SCORE", centerWidth, height / 10.0);
+    Inf101Graphics.drawCenteredString(g2, getScoreAsString(model.getHighScore()), centerWidth, height * 1.5 / 10);
 
-    g2.drawString("SCORE", x1, 200);
-    g2.drawString(getScoreAsString(model.getScore()), x1, 240);
+    Inf101Graphics.drawCenteredString(g2, "SCORE", centerWidth, height * 3 / 10.0);
+    Inf101Graphics.drawCenteredString(g2, getScoreAsString(model.getScore()), centerWidth, height * 3.5 / 10);
 
-    g2.drawString("LEVEL", x1, 400);
-    g2.drawString(Integer.toString(model.getLevel()), x1 + 10, 440);
+    Inf101Graphics.drawCenteredString(g2, "LEVEL", centerWidth, height * 5.5 / 10);
+    Inf101Graphics.drawCenteredString(g2, Integer.toString(model.getLevel()), centerWidth, height * 6 / 10.0);
 
-    g2.drawString("NEXT PIECE", x1, 560);
-    TetrisBoard board = new TetrisBoard(4, 4);
-    Rectangle2D box = new Rectangle2D.Double(x1 + 20, 600, PREFERRED_CELL_SIZE * 4, PREFERRED_CELL_SIZE * 4);
-    CellPositionToPixelConverter posToPixel = new CellPositionToPixelConverter(box, board, INNER_MARGIN);
+    Inf101Graphics.drawCenteredString(g2, "NEXT PIECE", centerWidth, height * 7.5 / 10.0);
+    TetrisBoard previewBoard = new TetrisBoard(4, 4);
+
+    // width of cell on main board
+    GridDimension dim = model.getDimension();
+    double cellWidth = (width * 3 / 5.0 - 2 * OUTER_MARGIN) / dim.getCols();
+    double cellHeight = (height - 2 * OUTER_MARGIN) / dim.getRows();
+
+    Rectangle2D box = new Rectangle2D.Double(
+        width * 7 / 10.0,
+        height * 7.5 / 10,
+        cellWidth * 4,
+        cellHeight * 4
+    );
+    CellPositionToPixelConverter posToPixel = new CellPositionToPixelConverter(box, previewBoard, INNER_MARGIN);
     drawCells(g2, model.getNext(), posToPixel, colorTheme);
   }
 
@@ -136,12 +152,15 @@ public class TetrisView extends JPanel {
     double x = width / 2.0;
     double y = height / 7.0 * 3; // slightly above center
 
-    // for some reason, this single line adds a slight delay on game-over
-    g2.setFont(colorTheme.getFont("big"));
+    String fontFamily = colorTheme.getFontFamily();
+    Font big = new Font(fontFamily, Font.BOLD, width / 8);
+    Font medium = new Font(fontFamily, Font.BOLD, width / 20);
+
+    g2.setFont(big);
     Inf101Graphics.drawCenteredString(g2, "Game Over", x, y);
 
-    g2.setFont(colorTheme.getFont("small"));
-    Inf101Graphics.drawCenteredString(g2, "Press <Enter> to start a new game", x, y + 100);
+    g2.setFont(medium);
+    Inf101Graphics.drawCenteredString(g2, "Press <Enter> to start a new game", x, y + height / 8.0);
   }
 
   private void drawPauseMenu(Graphics2D g2) {
@@ -151,14 +170,18 @@ public class TetrisView extends JPanel {
     g2.setColor(colorTheme.getPauseForeground());
     g2.fillRect(0, 0, width, height);
 
-    g2.setFont(colorTheme.getFont("big"));
+    String fontFamily = colorTheme.getFontFamily();
+    Font big = new Font(fontFamily, Font.BOLD, width / 8);
+    Font medium = new Font(fontFamily, Font.BOLD, width / 20);
+
+    g2.setFont(big);
     g2.setColor(colorTheme.getBrightFontColor());
     double x = width / 2.0;
     double y = height / 7.0 * 3; // slightly above center
     Inf101Graphics.drawCenteredString(g2, "Game paused", x, y);
 
-    g2.setFont(colorTheme.getFont("small"));
-    Inf101Graphics.drawCenteredString(g2, "Press <Esc> to resume game", x, y + 100);
+    g2.setFont(medium);
+    Inf101Graphics.drawCenteredString(g2, "Press <Esc> to resume game", x, y + height / 8.0);
 
   }
 }
