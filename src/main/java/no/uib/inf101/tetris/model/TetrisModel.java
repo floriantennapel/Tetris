@@ -262,10 +262,16 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     try {
       File file = new File(HIGH_SCORE_FILE);
       if (file.exists()) {
-        file.delete();
+        if (!file.delete()) {
+          System.err.println("Could not replace high-score file");
+          return;
+        }
       }
 
-      file.createNewFile();
+      if (!file.createNewFile()) {
+        System.err.println("Could not create new high-score file");
+        return;
+      }
 
       PrintStream writer = new PrintStream(file);
       writer.println(score);
