@@ -22,8 +22,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private static final int FINAL_LEVEL = 20;
   private static final int START_DELTA_TIME = 1000;
 
-  // path must be absolute to work correctly when building project
-  private static final String HIGH_SCORE_FILE = "src/main/resources/no/uib/inf101/tetris/model/highscore.txt";
+  // file is stored in project root folder, writing to the resources folder is not allowed at runtime
+  private static final String HIGH_SCORE_FILE = "highscore.txt";
 
   private final TetrominoFactory tetrominoFactory;
 
@@ -253,7 +253,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
       reader.close();
       return highScore;
     } catch (IOException e) {
-      System.err.println(e);
+      System.err.println("Could not read high-score from file");
       return 0;
     }
   }
@@ -272,7 +272,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
       writer.close();
     } catch (IOException | NullPointerException e ) {
-      throw new RuntimeException(e);
+      System.err.println("Could not write high-score to file");
     }
   }
 }
