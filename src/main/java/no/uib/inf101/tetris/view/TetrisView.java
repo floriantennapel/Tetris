@@ -238,10 +238,8 @@ public class TetrisView extends JPanel {
       for (int i = 0; i < lines.size(); i++) {
         for (int j = 0; j < lines.get(0).length(); j++) {
           char current = lines.get(i).charAt(j);
-          if (current != ' ') {
-            g2.setColor(colorTheme.getCellColor(current));
-            g2.fill(posToPix.getBoundsForCell(new CellPosition(i, j)));
-          }
+          g2.setColor(colorTheme.getCellColor(current));
+          g2.fill(posToPix.getBoundsForCell(new CellPosition(i, j)));
         }
       }
     } catch (IOException e) {
