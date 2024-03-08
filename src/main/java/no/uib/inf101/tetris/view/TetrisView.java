@@ -212,7 +212,7 @@ public class TetrisView extends JPanel {
         margin,
         height * 0.3,
         boxWidth,
-        // title has dimension is 5 * 28
+        // title has dimension 5 * 28
         boxWidth * 5 / 28.0
     );
 
