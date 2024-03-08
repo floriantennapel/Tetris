@@ -88,10 +88,10 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getDroppedPosition(), posToPixel, shadowColorTheme);
 
     if (model.getGameState() == GameState.GAME_OVER) {
-      drawGameOver(g2);
+      drawOntopOfScreen(g2, "Game Over", "Press <Enter> to play again");
     }
     if (model.getGameState() == GameState.PAUSED) {
-      drawPauseMenu(g2);
+      drawOntopOfScreen(g2, "Game Paused", "Press <Esc> to resume game");
     }
   }
 
@@ -112,21 +112,30 @@ public class TetrisView extends JPanel {
     int width = this.getWidth();
     int height = this.getHeight();
 
-    double centerWidth = width * 4 / 5.0;
+    double sideCenter = width * 4 / 5.0;
 
+    // There are many "magic numbers" here, but they are just that, arbitrarily picked numbers that look good
+    // It doesn't really make sense to name the values anything
     g2.setColor(Color.DARK_GRAY);
     g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 21));
 
-    Inf101Graphics.drawCenteredString(g2, "HIGH SCORE", centerWidth, height / 10.0);
-    Inf101Graphics.drawCenteredString(g2, getScoreAsString(model.getHighScore()), centerWidth, height * 1.5 / 10);
+    Inf101Graphics.drawCenteredString(g2, "HIGH SCORE", sideCenter, height * 0.1);
+    Inf101Graphics.drawCenteredString(g2, String.format("%07d", model.getHighScore()), sideCenter, height * 0.15);
 
-    Inf101Graphics.drawCenteredString(g2, "SCORE", centerWidth, height * 3 / 10.0);
-    Inf101Graphics.drawCenteredString(g2, getScoreAsString(model.getScore()), centerWidth, height * 3.5 / 10);
+    Inf101Graphics.drawCenteredString(g2, "SCORE", sideCenter, height * 0.3);
+    Inf101Graphics.drawCenteredString(g2, String.format("%07d", model.getScore()), sideCenter, height * 0.35);
 
-    Inf101Graphics.drawCenteredString(g2, "LEVEL", centerWidth, height * 5.5 / 10);
-    Inf101Graphics.drawCenteredString(g2, Integer.toString(model.getLevel()), centerWidth, height * 6 / 10.0);
+    Inf101Graphics.drawCenteredString(g2, "LEVEL", sideCenter, height * 0.55);
+    Inf101Graphics.drawCenteredString(g2, Integer.toString(model.getLevel()), sideCenter, height * 0.6);
 
-    Inf101Graphics.drawCenteredString(g2, "NEXT PIECE", centerWidth, height * 7.5 / 10.0);
+    Inf101Graphics.drawCenteredString(g2, "NEXT PIECE", sideCenter, height * 0.75);
+    drawPreviewPiece(g2);
+  }
+
+  private void drawPreviewPiece(Graphics2D g2) {
+    int width = this.getWidth();
+    int height = this.getHeight();
+
     TetrisBoard previewBoard = new TetrisBoard(4, 4);
 
     // width of cell on main board
@@ -135,8 +144,8 @@ public class TetrisView extends JPanel {
     double cellHeight = (height - 2 * OUTER_MARGIN) / dim.getRows();
 
     Rectangle2D box = new Rectangle2D.Double(
-        width * 7 / 10.0,
-        height * 7.5 / 10,
+        width * 0.7,
+        height * 0.75,
         cellWidth * 4,
         cellHeight * 4
     );
@@ -144,17 +153,7 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getNext(), posToPixel, colorTheme);
   }
 
-  private String getScoreAsString(int score) {
-    String s = Integer.toString(score);
-
-    while (s.length() < 7) {
-      s = "0" + s;
-    }
-
-    return s;
-  }
-
-  private void drawGameOver(Graphics2D g2) {
+  private void drawOntopOfScreen(Graphics2D g2, String mainText, String secondaryText) {
     int height = this.getHeight();
     int width = this.getWidth();
 
@@ -170,31 +169,10 @@ public class TetrisView extends JPanel {
     Font medium = new Font(fontFamily, Font.BOLD, width / 20);
 
     g2.setFont(big);
-    Inf101Graphics.drawCenteredString(g2, "Game Over", x, y);
+    Inf101Graphics.drawCenteredString(g2, mainText, x, y);
 
     g2.setFont(medium);
-    Inf101Graphics.drawCenteredString(g2, "Press <Enter> to start a new game", x, y + height / 8.0);
-  }
-
-  private void drawPauseMenu(Graphics2D g2) {
-    int height = this.getHeight();
-    int width = this.getWidth();
-
-    g2.setColor(colorTheme.getPauseForeground());
-    g2.fillRect(0, 0, width, height);
-
-    String fontFamily = colorTheme.getFontFamily();
-    Font big = new Font(fontFamily, Font.BOLD, width / 8);
-    Font medium = new Font(fontFamily, Font.BOLD, width / 20);
-
-    g2.setFont(big);
-    g2.setColor(colorTheme.getBrightFontColor());
-    double x = width / 2.0;
-    double y = height / 7.0 * 3; // slightly above center
-    Inf101Graphics.drawCenteredString(g2, "Game paused", x, y);
-
-    g2.setFont(medium);
-    Inf101Graphics.drawCenteredString(g2, "Press <Esc> to resume game", x, y + height / 8.0);
+    Inf101Graphics.drawCenteredString(g2, secondaryText, x, y + height / 8.0);
   }
 
   private void drawStartMenu(Graphics2D g2) {
