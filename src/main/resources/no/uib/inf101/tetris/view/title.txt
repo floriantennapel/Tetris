@@ -1,5 +1,5 @@
-TTTTT-JJJ-IIIII-ZZ---OOO-SSS
---T---J-----I---Z-Z---O--S--
---T---JJ----I---ZZ----O--SSS
---T---J-----I---Z-Z---O----S
---T---JJJ---I---Z--Z-OOO-SSS
+TTTTT-JJJ-IIIII-ZZ--OOO-SSS
+--T---J-----I---Z-Z--O--S--
+--T---JJ----I---ZZ---O--SSS
+--T---J-----I---Z-Z--O----S
+--T---JJJ---I---Z-Z-OOO-SSS

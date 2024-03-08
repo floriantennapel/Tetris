@@ -182,7 +182,7 @@ public class TetrisView extends JPanel {
     double margin = width / 10.0;
     double boxWidth = width - 2 * margin;
 
-    g2.setColor(colorTheme.getStartMenuBackground());
+    g2.setColor(colorTheme.getBackgroundColor());
     g2.fillRect(0, 0, width, height);
 
 
@@ -190,12 +190,12 @@ public class TetrisView extends JPanel {
         margin,
         height * 0.3,
         boxWidth,
-        // title has dimension 5 * 28
-        boxWidth * 5 / 28.0
+        // title has dimension 5 * 27
+        boxWidth * 5 / 27.0
     );
 
     double innerMargin = 2.0;
-    TetrisBoard board = new TetrisBoard(5, 28);
+    TetrisBoard board = new TetrisBoard(5, 27);
     CellPositionToPixelConverter posToPix = new CellPositionToPixelConverter(box, board, innerMargin);
     drawTitle(g2, posToPix);
 

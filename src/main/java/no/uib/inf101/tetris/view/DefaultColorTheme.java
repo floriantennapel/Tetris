@@ -35,7 +35,7 @@ public class DefaultColorTheme implements ColorTheme {
 
   @Override
   public Color getBackgroundColor() {
-    return null;
+    return new Color(252, 248, 234);
   }
 
   @Override
@@ -50,11 +50,6 @@ public class DefaultColorTheme implements ColorTheme {
 
   @Override
   public Color getBrightFontColor() {
-    return Color.LIGHT_GRAY.brighter();
-  }
-
-  @Override
-  public Color getStartMenuBackground() {
     return Color.LIGHT_GRAY.brighter();
   }
 
