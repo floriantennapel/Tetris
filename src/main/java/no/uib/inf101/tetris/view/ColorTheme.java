@@ -20,4 +20,7 @@ public interface ColorTheme {
 
   /** font-color of game-over message */
   Color getBrightFontColor();
+
+  /** color of start menu background */
+  Color getStartMenuBackground();
 }

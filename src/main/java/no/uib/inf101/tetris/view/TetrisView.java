@@ -1,5 +1,6 @@
 package no.uib.inf101.tetris.view;
 
+import no.uib.inf101.grid.CellPosition;
 import no.uib.inf101.grid.GridCell;
 import no.uib.inf101.grid.GridDimension;
 import no.uib.inf101.tetris.model.GameState;
@@ -8,12 +9,18 @@ import no.uib.inf101.tetris.model.TetrisBoard;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 
 public class TetrisView extends JPanel {
   private static final double OUTER_MARGIN = 5.0;
   private static final double INNER_MARGIN = 2.0;
   // tweaked to fit on windows with 150 % scaling
   private static final double PREFERRED_CELL_SIZE = 29.5;
+  private static final String TITLE_FILE = "title.txt";
 
   private final ViewableTetrisModel model;
   private final ColorTheme colorTheme;
@@ -51,6 +58,11 @@ public class TetrisView extends JPanel {
   }
 
   private void drawGame(Graphics2D g2) {
+    if (model.getGameState() == GameState.START_MENU) {
+      drawStartMenu(g2);
+      return;
+    }
+
     // draw background
     Rectangle2D box = new Rectangle2D.Double(
         OUTER_MARGIN,
@@ -183,6 +195,57 @@ public class TetrisView extends JPanel {
 
     g2.setFont(medium);
     Inf101Graphics.drawCenteredString(g2, "Press <Esc> to resume game", x, y + height / 8.0);
+  }
 
+  private void drawStartMenu(Graphics2D g2) {
+    int height = this.getHeight();
+    int width = this.getWidth();
+
+    double margin = width / 10.0;
+    double boxWidth = width - 2 * margin;
+
+    g2.setColor(colorTheme.getStartMenuBackground());
+    g2.fillRect(0, 0, width, height);
+
+
+    Rectangle2D box = new Rectangle2D.Double(
+        margin,
+        height * 0.3,
+        boxWidth,
+        // title has dimension is 5 * 28
+        boxWidth * 5 / 28.0
+    );
+
+    double innerMargin = 2.0;
+    TetrisBoard board = new TetrisBoard(5, 28);
+    CellPositionToPixelConverter posToPix = new CellPositionToPixelConverter(box, board, innerMargin);
+    drawTitle(g2, posToPix);
+
+    g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 20));
+    g2.setColor(Color.DARK_GRAY);
+    Inf101Graphics.drawCenteredString(g2, "Press <Enter> to start game", width / 2.0, height * 0.7);
+  }
+
+  private void drawTitle(Graphics2D g2, CellPositionToPixelConverter posToPix) {
+    try {
+      // since this is only used once and I don't want to clutter up all the methods in the tetromino-package, this is not using the draw-cells method.
+      InputStream stream = TetrisView.class.getResourceAsStream(TITLE_FILE);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+      List<String> lines = reader.lines().toList();
+      reader.close();
+      stream.close();
+
+      for (int i = 0; i < lines.size(); i++) {
+        for (int j = 0; j < lines.get(0).length(); j++) {
+          char current = lines.get(i).charAt(j);
+          if (current != ' ') {
+            g2.setColor(colorTheme.getCellColor(current));
+            g2.fill(posToPix.getBoundsForCell(new CellPosition(i, j)));
+          }
+        }
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

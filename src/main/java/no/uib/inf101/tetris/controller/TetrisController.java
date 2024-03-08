@@ -44,19 +44,31 @@ public class TetrisController implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent keyEvent) {
-    if (model.getGameState().equals(GameState.GAME_OVER)) {
-      if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
-        model.resetGame();
+    switch (model.getGameState()) {
+      case START_MENU -> {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+          model.setGameState(GameState.ACTIVE_GAME);
+        }
+      }
+      case GAME_OVER -> {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+          model.resetGame();
+        }
+      }
+      case PAUSED -> {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+          togglePause();
+        }
+      }
+      case ACTIVE_GAME -> {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+          togglePause();
+        }
+        if (model.getGameState() == GameState.ACTIVE_GAME) {
+          checkMoveKeys(keyEvent);
+        }
       }
     }
-
-    if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
-      togglePause();
-    }
-    if (model.getGameState() == GameState.ACTIVE_GAME) {
-      checkMoveKeys(keyEvent);
-    }
-
     view.repaint();
   }
 

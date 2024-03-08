@@ -53,6 +53,11 @@ public class DefaultColorTheme implements ColorTheme {
     return Color.LIGHT_GRAY.brighter();
   }
 
+  @Override
+  public Color getStartMenuBackground() {
+    return Color.LIGHT_GRAY.brighter();
+  }
+
   private Color hexColor(String hexValue) {
     return new Color(Integer.parseInt(hexValue, 16));
   }

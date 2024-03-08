@@ -48,7 +48,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     currentlyFallingTetromino = this.tetrominoFactory.getNext().shiftedToTopCenterOf(board);
     nextTetromino = this.tetrominoFactory.getNext();
-    gameState = GameState.ACTIVE_GAME;
+    gameState = GameState.START_MENU;
     deltaTime = START_DELTA_TIME;
     level = 1;
     score = 0;
@@ -98,7 +98,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   public void resetGame() {
     board = new TetrisBoard(board.getRows(), board.getCols());
 
-    gameState = GameState.ACTIVE_GAME;
+    gameState = GameState.START_MENU;
     deltaTime = START_DELTA_TIME;
     level = 1;
     score = 0;
