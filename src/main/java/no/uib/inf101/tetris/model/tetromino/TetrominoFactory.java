@@ -1,6 +1,11 @@
 package no.uib.inf101.tetris.model.tetromino;
 
 public interface TetrominoFactory {
-  /** @return a new tetromino to add to the game */
+  /**
+   * Get a new tetromino
+   *
+   * @return A new tetromino with top left corner at position (0,0),
+   * what the piece will be is specified by the implementing class
+   */
   Tetromino getNext();
 }

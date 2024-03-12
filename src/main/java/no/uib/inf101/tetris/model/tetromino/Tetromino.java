@@ -23,25 +23,43 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     this.position = position;
   }
 
-  /** constructor for Tetromino, actual constructor is private */
+  /**
+   * A constructor for the Tetromino class, the actual constructor is private
+   * @param typeSymbol must be one of the shapes specified by this.VALID_SHAPES
+   * @return a new tetromino at position 0, 0
+   * @throws IllegalArgumentException if typeSymbol is not valid
+   */
   static Tetromino newTetromino(char typeSymbol) throws IllegalArgumentException {
     if (!SHAPES.containsKey(typeSymbol)) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("typeSymbol must be one of Tetromino.VALID_SHAPES");
     }
 
     return new Tetromino(typeSymbol, SHAPES.get(typeSymbol), new CellPosition(0, 0));
   }
 
-  /**Does not check if new position is within bounds of board
-   * @return copy of current tetromino shifted by deltaRow and deltaCol */
+  /**
+   * A copy of this shifted by a specified amount
+   * <p/>
+   * No checks are made to ensure that the piece is within bounds.
+   *
+   * @param deltaRow distance to move vertically
+   * @param deltaCol distance to move horizontally
+   */
   public Tetromino shiftedBy(int deltaRow, int deltaCol) {
     CellPosition deltaPos = new CellPosition(deltaRow, deltaCol);
 
     return new Tetromino(typeSymbol, shape, position.add(deltaPos));
   }
 
-  /** @return copy of current tetromino shifted to starting position (centered vertically at top of screen)
-   * @throws IllegalArgumentException in case of null argument */
+  /**
+   * A copy of this shifted to starting position at the top-center of a specified grid
+   * <p/>
+   * If the parities of the piece and grid do not match,
+   * the piece can be arbitrarily positioned left or right of center
+   *
+   * @param gridDimension Height and width of grid
+   * @throws IllegalArgumentException if gridDimension is null
+   */
   public Tetromino shiftedToTopCenterOf(GridDimension gridDimension) throws IllegalArgumentException {
     if (gridDimension == null) {
       throw new IllegalArgumentException("gridDimension cannot be null");
@@ -64,8 +82,10 @@ public class Tetromino implements Iterable<GridCell<Character>> {
     return shiftedBy(-1, deltaCol);
   }
 
-  /** @param clockwise should the rotation be clockwise or counter-clockwise
-   *  @return A copy of this tetromino rotated 90 degrees */
+  /**
+   * A copy of this rotated by 90 degrees
+   * @param clockwise Should the rotation be clockwise, if false the rotation is counter-clockwise
+   */
   public Tetromino rotated(boolean clockwise) {
     // 3x3 or 4x4
     int shapeDimension = shape.length;
