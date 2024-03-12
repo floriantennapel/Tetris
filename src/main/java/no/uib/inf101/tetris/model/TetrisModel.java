@@ -22,7 +22,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private static final int FINAL_LEVEL = 20;
   private static final int START_DELTA_TIME = 1000;
 
-  // file is stored in project root folder, writing to the resources folder is not allowed at runtime
+  // file is stored in root of current directory, writing to the resources folder is not allowed at runtime
   private static final String HIGH_SCORE_FILE = "highscore.txt";
 
   private final TetrominoFactory tetrominoFactory;
@@ -118,27 +118,6 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     return true;
   }
 
-  private Optional<Tetromino> wallKick(Tetromino rotated) {
-    if (isValidPosition(rotated)) {
-      return Optional.of(rotated);
-    }
-
-    List<CellPosition> shiftPositions = List.of(
-        new CellPosition(0, 1), new CellPosition(0, 2),
-        new CellPosition(0, -1), new CellPosition(0, -2),
-        new CellPosition(1, 0), new CellPosition(2, 0)
-    );
-
-    for (CellPosition cp : shiftPositions) {
-      Tetromino kicked = rotated.shiftedBy(cp.row(), cp.col());
-      if (isValidPosition(kicked)) {
-        return Optional.of(kicked);
-      }
-    }
-
-    return Optional.empty();
-  }
-
   @Override
   public boolean rotateTetromino(boolean clockwise) {
     Tetromino rotated = currentlyFallingTetromino.rotated(clockwise);
@@ -154,10 +133,72 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     return true;
   }
 
+  // This implementation is purely meant to be a quick fix,
+  // it is nothing fancy and does not follow any official guidelines
+  // for each direction right, left and down, checks if the rotated
+  // piece could fit by a shift once of twice in the direction,
+  // if it does, this position returned.
+  private Optional<Tetromino> wallKick(Tetromino rotated) {
+    if (isValidPosition(rotated)) {
+      return Optional.of(rotated);
+    }
+
+    List<CellPosition> shiftPositions = List.of(
+            new CellPosition(0, 1), new CellPosition(0, 2),
+            new CellPosition(0, -1), new CellPosition(0, -2),
+            new CellPosition(1, 0), new CellPosition(2, 0)
+    );
+
+    for (CellPosition cp : shiftPositions) {
+      Tetromino kicked = rotated.shiftedBy(cp.row(), cp.col());
+      if (isValidPosition(kicked)) {
+        return Optional.of(kicked);
+      }
+    }
+
+    return Optional.empty();
+  }
+
   @Override
   public void dropTetromino() {
     currentlyFallingTetromino = getDroppedPosition();
     addTetrominoToBoardAndClearRows();
+  }
+
+  @Override
+  public int getScore() {
+    return score;
+  }
+
+  @Override
+  public int getLevel() {
+    return level;
+  }
+
+  @Override
+  public Iterable<GridCell<Character>> getNext() {
+    return nextTetromino;
+  }
+
+  @Override
+  public Tetromino getDroppedPosition() {
+    Tetromino dropped = currentlyFallingTetromino.shiftedBy(0, 0); // logically equal to clone()
+
+    while (true) {
+      Tetromino nextPosition = dropped.shiftedBy(1, 0);
+      if (!isValidPosition(nextPosition)) {
+        break;
+      }
+
+      dropped = nextPosition;
+    }
+
+    return dropped;
+  }
+
+  @Override
+  public int getHighScore() {
+    return highScore;
   }
 
   private void newTetromino() {
@@ -206,42 +247,6 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     return true;
   }
 
-  @Override
-  public int getScore() {
-    return score;
-  }
-
-  @Override
-  public int getLevel() {
-    return level;
-  }
-
-  @Override
-  public Iterable<GridCell<Character>> getNext() {
-    return nextTetromino;
-  }
-
-  @Override
-  public Tetromino getDroppedPosition() {
-    Tetromino dropped = currentlyFallingTetromino.shiftedBy(0, 0); // logically equal to clone()
-
-    while (true) {
-      Tetromino nextPosition = dropped.shiftedBy(1, 0);
-      if (!isValidPosition(nextPosition)) {
-        break;
-      }
-
-      dropped = nextPosition;
-    }
-
-    return dropped;
-  }
-
-  @Override
-  public int getHighScore() {
-    return highScore;
-  }
-
   private int readHighScore() {
     try {
       BufferedReader reader = new BufferedReader(
@@ -258,6 +263,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
   }
 
+
+  // After many attempts, I was unable to write this to an internal project file.
+  // Apparently the resources directory does not allow for run-time writing to files.
+  // Instead, the file is written in the directory that the program is run in.
   private void writeHighScore() {
     try {
       File file = new File(HIGH_SCORE_FILE);

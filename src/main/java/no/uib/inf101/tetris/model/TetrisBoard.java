@@ -11,8 +11,10 @@ public class TetrisBoard extends Grid<Character> {
     super(rows, cols, '-');
   }
 
-  /** clear rows that are filled, and move all above rows down
-   * @return number of rows that were removed */
+  /**
+   * Clear all rows on board that are filled with pieces
+   * @return How many rows were cleared
+   */
   public int clearRows() {
     int rows = getRows();
 
