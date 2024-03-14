@@ -133,32 +133,6 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     return true;
   }
 
-  // This implementation is purely meant to be a quick fix,
-  // it is nothing fancy and does not follow any official guidelines
-  // for each direction right, left and down, checks if the rotated
-  // piece could fit by a shift once of twice in the direction,
-  // if it does, this position returned.
-  private Optional<Tetromino> wallKick(Tetromino rotated) {
-    if (isValidPosition(rotated)) {
-      return Optional.of(rotated);
-    }
-
-    List<CellPosition> shiftPositions = List.of(
-            new CellPosition(0, 1), new CellPosition(0, 2),
-            new CellPosition(0, -1), new CellPosition(0, -2),
-            new CellPosition(1, 0), new CellPosition(2, 0)
-    );
-
-    for (CellPosition cp : shiftPositions) {
-      Tetromino kicked = rotated.shiftedBy(cp.row(), cp.col());
-      if (isValidPosition(kicked)) {
-        return Optional.of(kicked);
-      }
-    }
-
-    return Optional.empty();
-  }
-
   @Override
   public void dropTetromino() {
     currentlyFallingTetromino = getDroppedPosition();
@@ -211,6 +185,32 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         writeHighScore();
       }
     }
+  }
+
+  // This implementation is purely meant to be a quick fix,
+  // it is nothing fancy and does not follow any official guidelines
+  // for each direction right, left and down, checks if the rotated
+  // piece could fit by a shift once of twice in the direction,
+  // if it does, this position is returned.
+  private Optional<Tetromino> wallKick(Tetromino rotated) {
+    if (isValidPosition(rotated)) {
+      return Optional.of(rotated);
+    }
+
+    List<CellPosition> shiftPositions = List.of(
+        new CellPosition(0, 1), new CellPosition(0, 2),
+        new CellPosition(0, -1), new CellPosition(0, -2),
+        new CellPosition(1, 0), new CellPosition(2, 0)
+    );
+
+    for (CellPosition cp : shiftPositions) {
+      Tetromino kicked = rotated.shiftedBy(cp.row(), cp.col());
+      if (isValidPosition(kicked)) {
+        return Optional.of(kicked);
+      }
+    }
+
+    return Optional.empty();
   }
 
   private void addTetrominoToBoardAndClearRows() {

@@ -9,13 +9,14 @@ public interface ViewableTetrisModel {
   /** @return Dimension of grid */
   GridDimension getDimension();
 
-  /** @return Every tile from tetris board containing position and symbol */
+  /** @return Every GridCell object on board, does not include currently moving piece */
   Iterable<GridCell<Character>> getTilesOnBoard();
 
   /** @return Tiles of currently moving tetromino */
   Iterable<GridCell<Character>> getMovingTetrominoTiles();
 
-  /** current state of game */
+  /** current state of game
+   * @return one of the states specified by the GameState enum */
   GameState getGameState();
 
   /** get score of game */
@@ -24,7 +25,7 @@ public interface ViewableTetrisModel {
   /** get current level of game */
   int getLevel();
 
-  /** get tiles of next tetromino */
+  /** get tiles of tetromino that will be added after the currently moving piece */
   Iterable<GridCell<Character>> getNext();
 
   /** get position of piece as if it has been dropped */

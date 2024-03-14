@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultColorTheme implements ColorTheme {
+  // color of pieces is stored in separate file
   private static final String COLOR_FILE = "defaultColors.txt";
   private static final String FONT_FAMILY = "Arial";
 
@@ -45,7 +46,7 @@ public class DefaultColorTheme implements ColorTheme {
 
   @Override
   public Color getPauseForeground() {
-    return new Color(0, 0, 0, 128);
+    return new Color(28, 0, 13, 80);
   }
 
   @Override

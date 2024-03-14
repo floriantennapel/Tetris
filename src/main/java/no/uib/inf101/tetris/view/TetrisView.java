@@ -149,7 +149,9 @@ public class TetrisView extends JPanel {
         cellWidth * 4,
         cellHeight * 4
     );
-    CellPositionToPixelConverter posToPixel = new CellPositionToPixelConverter(box, previewBoard, INNER_MARGIN);
+    CellPositionToPixelConverter posToPixel = new CellPositionToPixelConverter(
+        box, previewBoard, INNER_MARGIN
+    );
     drawCells(g2, model.getNext(), posToPixel, colorTheme);
   }
 
@@ -196,17 +198,24 @@ public class TetrisView extends JPanel {
 
     double innerMargin = 2.0;
     TetrisBoard board = new TetrisBoard(5, 27);
-    CellPositionToPixelConverter posToPix = new CellPositionToPixelConverter(box, board, innerMargin);
+    CellPositionToPixelConverter posToPix = new CellPositionToPixelConverter(
+        box, board, innerMargin
+    );
     drawTitle(g2, posToPix);
 
     g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 20));
     g2.setColor(Color.DARK_GRAY);
-    Inf101Graphics.drawCenteredString(g2, "Press <Enter> to start game", width / 2.0, height * 0.7);
+    Inf101Graphics.drawCenteredString(
+        g2, "Press <Enter> to start game",
+        width / 2.0, height * 0.7
+    );
   }
 
+  // title is actually a TetrisBoard drawn at runtime
   private void drawTitle(Graphics2D g2, CellPositionToPixelConverter posToPix) {
     try {
-      // since this is only used once and I don't want to clutter up all the methods in the tetromino-package, this is not using the draw-cells method.
+      // this is not using the draw-cells method since this is only used once
+      // and I don't want to clutter up all the methods in the tetromino-package.
       InputStream stream = TetrisView.class.getResourceAsStream(TITLE_FILE);
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
       List<String> lines = reader.lines().toList();

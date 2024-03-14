@@ -95,6 +95,7 @@ public class TetrisBoard extends Grid<Character> {
     return true;
   }
 
+  /** Used for testing */
   String prettyString() {
     StringBuilder s = new StringBuilder();
     int charCount = 1;
