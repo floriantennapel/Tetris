@@ -167,4 +167,5 @@ public class TestTetromino {
   }
 
   //TODO write test for rotation that checks whether piece can be rotated to invalid position
+
 }

@@ -116,4 +116,37 @@ public class TestTetrisModel {
     });
     assertEquals(expected, board.prettyString());
   }
+
+  @Test
+  public void testCannotRotateToInvalidPos() {
+    TetrisBoard board = TestTetrisBoard.getTetrisBoardWithContents(new String[] {
+        "---------",
+        "---------",
+        "TTTTTTTTT",
+        "TTTTTTTTT",
+        "TTT---TTT",
+        "TTTT-TTTT",
+    });
+    TetrisModel model = new TetrisModel(board, new PatternedTetrominoFactory("T"));
+
+    // moving piece to little gap in middle
+    // and checking that it was valid
+
+    model.moveTetromino(4, 0);
+
+    List<GridCell<Character>> objs = new ArrayList<>();
+    for (GridCell<Character> gc : model.getMovingTetrominoTiles()) {
+      objs.add(gc);
+    }
+
+    assertEquals(4, objs.size());
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(4, 3), 'T')));
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(4, 4), 'T')));
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(4, 5), 'T')));
+    assertTrue(objs.contains(new GridCell<>(new CellPosition(5, 4), 'T')));
+
+    // checking that we cannot rotate anywhere
+    assertFalse(model.rotateTetromino(true));
+    assertFalse(model.rotateTetromino(false));
+  }
 }

@@ -109,7 +109,6 @@ public class TestTetrisBoard {
   }
 
   // method is package private, so I can reuse in other tests
-
   /** given a string array representing the model, returns a new TetrisBoard equivalent to the representation
    *
    * @param contents non-empty array, where every string is the representation of a row, all rows must have equal length
