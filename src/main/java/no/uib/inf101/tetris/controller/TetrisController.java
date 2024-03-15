@@ -44,6 +44,11 @@ public class TetrisController implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent keyEvent) {
+    if (keyEvent.getKeyChar() == 'm') {
+      model.toggleSound();
+      music.togglePauseMidiSounds();
+    }
+
     switch (model.getGameState()) {
       case START_MENU -> {
         if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {

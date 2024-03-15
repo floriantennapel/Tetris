@@ -62,4 +62,9 @@ public interface ControllableTetrisModel {
    * the board and any filled rows will be cleared.
    */
   void clockTick();
+
+  /**
+   * Turn sound on or off depending on the current state
+   */
+  void toggleSound();
 }

@@ -34,6 +34,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private int score;
   private int linesCleared;
   private int highScore;
+  private boolean soundOn;
 
   // milliseconds between every falling movement
   // increases with level
@@ -53,6 +54,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     level = 1;
     score = 0;
     linesCleared = 0;
+    soundOn = true;
 
     highScore = readHighScore();
   }
@@ -187,6 +189,11 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
   }
 
+  @Override
+  public void toggleSound() {
+    soundOn = !soundOn;
+  }
+
   // This implementation is purely meant to be a quick fix,
   // it is nothing fancy and does not follow any official guidelines
   // for each direction right, left and down, checks if the rotated
@@ -211,6 +218,11 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
 
     return Optional.empty();
+  }
+
+  @Override
+  public boolean getMusicState() {
+    return soundOn;
   }
 
   private void addTetrominoToBoardAndClearRows() {

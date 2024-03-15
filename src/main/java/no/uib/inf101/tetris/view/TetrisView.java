@@ -9,6 +9,7 @@ import no.uib.inf101.tetris.model.TetrisBoard;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,8 @@ public class TetrisView extends JPanel {
   // tweaked to fit on windows with 150 % scaling
   private static final double PREFERRED_CELL_SIZE = 29.5;
   private static final String TITLE_FILE = "title.txt";
+  private static final String MUTE_IMAGE = "no-sound.png";
+  private static final String SOUND_IMAGE = "sound.png";
   private static final char CR = (char) 8629; // 8617 or 8629, carriage return symbol
 
   private final ViewableTetrisModel model;
@@ -131,6 +134,8 @@ public class TetrisView extends JPanel {
 
     Inf101Graphics.drawCenteredString(g2, "NEXT PIECE", sideCenter, height * 0.75);
     drawPreviewPiece(g2);
+
+    drawSoundIcon(g2, width * 0.93, height * 0.95, 0.00008);
   }
 
   private void drawPreviewPiece(Graphics2D g2) {
@@ -210,6 +215,20 @@ public class TetrisView extends JPanel {
         g2, "Press " + CR + " to start game",
         width / 2.0, height * 0.7
     );
+
+    drawSoundIcon(g2, width / 2.0, height - (height * 0.1), 0.0001);
+
+    g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 40));
+    Inf101Graphics.drawCenteredString(
+        g2, "Press m to mute",
+        width / 2.0, height - (height * 0.04)
+    );
+  }
+
+  private void drawSoundIcon(Graphics2D g2, double x, double y, double scaleFactor) {
+    String imageFile = model.getMusicState() ? SOUND_IMAGE :  MUTE_IMAGE;
+    BufferedImage icon = Inf101Graphics.loadImageFromResources("no/uib/inf101/tetris/view/" + imageFile);
+    Inf101Graphics.drawCenteredImage(g2, icon, x, y, this.getHeight() * scaleFactor);
   }
 
   // title is actually a TetrisBoard drawn at runtime

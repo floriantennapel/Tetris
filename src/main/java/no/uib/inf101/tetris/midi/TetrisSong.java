@@ -51,24 +51,15 @@ public class TetrisSong implements Runnable {
         this.sequencer = null;
     }
 
-    public void doPauseMidiSounds() {
-        try {
-            if (this.sequencer == null || !this.sequencer.isRunning()) {
-                return;
-            }
-            this.sequencer.stop();
-        }
-        catch (Exception e) {
-            this.midiError("" + e);
-        }
-    }
-    
-    public void doUnpauseMidiSounds() {
+    public void togglePauseMidiSounds() {
         try {
             if (this.sequencer == null) {
                 return;
+            } else if (this.sequencer.isRunning()) {
+              this.sequencer.stop();
+            } else {
+              this.sequencer.start();
             }
-            this.sequencer.start();
         }
         catch (Exception e) {
             this.midiError("" + e);

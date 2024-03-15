@@ -33,4 +33,10 @@ public interface ViewableTetrisModel {
 
   /** get high score, this is read from a file, if there is an error it defaults to 0 */
   int getHighScore();
+
+  /**
+   * Is the music currently playing
+   * @return true if music is on, false if music is disabled
+   */
+  boolean getMusicState();
 }
