@@ -22,7 +22,6 @@ public class TetrisView extends JPanel {
   private static final String TITLE_FILE = "title.txt";
   private static final String MUTE_IMAGE = "no-sound.png";
   private static final String SOUND_IMAGE = "sound.png";
-  private static final char CARRIAGE_RET = (char) 8629; // 8617 or 8629, carriage return symbol
 
   private final ViewableTetrisModel model;
   private final ColorTheme colorTheme;
@@ -90,7 +89,7 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getDroppedPosition(), posToPixel, shadowColorTheme);
 
     if (model.getGameState() == GameState.GAME_OVER) {
-      drawOntopOfScreen(g2, "Game Over", "Press " + CARRIAGE_RET + " to play again");
+      drawOntopOfScreen(g2, "Game Over", "Press enter to play again");
     }
     if (model.getGameState() == GameState.PAUSED) {
       drawOntopOfScreen(g2, "Game Paused", "Press esc to resume game");
@@ -210,7 +209,7 @@ public class TetrisView extends JPanel {
     g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 20));
     g2.setColor(Color.DARK_GRAY);
     Inf101Graphics.drawCenteredString(
-        g2, "Press " + CARRIAGE_RET + " to start game",
+        g2, "Press enter to start game",
         width / 2.0, height * 0.7
     );
 

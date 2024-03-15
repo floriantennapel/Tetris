@@ -30,7 +30,6 @@ public class TetrisSong implements Runnable {
                 this.sequencer.setLoopCount(-1);
             }
             this.sequencer.open();
-            this.sequencer.start();
         }
         catch (Exception e) {
             this.midiError("" + e);

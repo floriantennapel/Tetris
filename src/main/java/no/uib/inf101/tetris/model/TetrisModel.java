@@ -54,7 +54,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     level = 1;
     score = 0;
     linesCleared = 0;
-    soundOn = true;
+    soundOn = false;
 
     highScore = readHighScore();
   }
