@@ -11,7 +11,7 @@ import java.util.Map;
 public class DefaultColorTheme implements ColorTheme {
   // color of pieces is stored in separate file
   private static final String COLOR_FILE = "defaultColors.txt";
-  private static final String FONT_FAMILY = "Arial";
+  private static final String FONT_FAMILY = "Courier";
 
   private final Map<Character, Color> charToColorMap;
 
@@ -51,7 +51,7 @@ public class DefaultColorTheme implements ColorTheme {
 
   @Override
   public Color getBrightFontColor() {
-    return Color.LIGHT_GRAY.brighter();
+    return Color.WHITE;
   }
 
   private Color hexColor(String hexValue) {

@@ -21,6 +21,7 @@ public class TetrisView extends JPanel {
   // tweaked to fit on windows with 150 % scaling
   private static final double PREFERRED_CELL_SIZE = 29.5;
   private static final String TITLE_FILE = "title.txt";
+  private static final char CR = (char) 8629; // 8617 or 8629, carriage return symbol
 
   private final ViewableTetrisModel model;
   private final ColorTheme colorTheme;
@@ -88,10 +89,10 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getDroppedPosition(), posToPixel, shadowColorTheme);
 
     if (model.getGameState() == GameState.GAME_OVER) {
-      drawOntopOfScreen(g2, "Game Over", "Press <Enter> to play again");
+      drawOntopOfScreen(g2, "Game Over", "Press " + CR + " to play again");
     }
     if (model.getGameState() == GameState.PAUSED) {
-      drawOntopOfScreen(g2, "Game Paused", "Press <Esc> to resume game");
+      drawOntopOfScreen(g2, "Game Paused", "Press esc to resume game");
     }
   }
 
@@ -206,7 +207,7 @@ public class TetrisView extends JPanel {
     g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 20));
     g2.setColor(Color.DARK_GRAY);
     Inf101Graphics.drawCenteredString(
-        g2, "Press <Enter> to start game",
+        g2, "Press " + CR + " to start game",
         width / 2.0, height * 0.7
     );
   }
