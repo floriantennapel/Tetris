@@ -6,14 +6,12 @@ import no.uib.inf101.grid.GridDimension;
 import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.tetris.model.TetrisBoard;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 
 public class TetrisView extends JPanel {
@@ -24,7 +22,7 @@ public class TetrisView extends JPanel {
   private static final String TITLE_FILE = "title.txt";
   private static final String MUTE_IMAGE = "no-sound.png";
   private static final String SOUND_IMAGE = "sound.png";
-  private static final char CR = (char) 8629; // 8617 or 8629, carriage return symbol
+  private static final char CARRIAGE_RET = (char) 8629; // 8617 or 8629, carriage return symbol
 
   private final ViewableTetrisModel model;
   private final ColorTheme colorTheme;
@@ -92,7 +90,7 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getDroppedPosition(), posToPixel, shadowColorTheme);
 
     if (model.getGameState() == GameState.GAME_OVER) {
-      drawOntopOfScreen(g2, "Game Over", "Press " + CR + " to play again");
+      drawOntopOfScreen(g2, "Game Over", "Press " + CARRIAGE_RET + " to play again");
     }
     if (model.getGameState() == GameState.PAUSED) {
       drawOntopOfScreen(g2, "Game Paused", "Press esc to resume game");
@@ -212,7 +210,7 @@ public class TetrisView extends JPanel {
     g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 20));
     g2.setColor(Color.DARK_GRAY);
     Inf101Graphics.drawCenteredString(
-        g2, "Press " + CR + " to start game",
+        g2, "Press " + CARRIAGE_RET + " to start game",
         width / 2.0, height * 0.7
     );
 
@@ -226,9 +224,18 @@ public class TetrisView extends JPanel {
   }
 
   private void drawSoundIcon(Graphics2D g2, double x, double y, double scaleFactor) {
-    String imageFile = model.getMusicState() ? SOUND_IMAGE :  MUTE_IMAGE;
-    BufferedImage icon = Inf101Graphics.loadImageFromResources("no/uib/inf101/tetris/view/" + imageFile);
-    Inf101Graphics.drawCenteredImage(g2, icon, x, y, this.getHeight() * scaleFactor);
+    try {
+      String imageFile = model.getMusicState() ? SOUND_IMAGE : MUTE_IMAGE;
+      InputStream imageStream = TetrisView.class.getResourceAsStream(imageFile);
+      if (imageStream == null) {
+        System.err.println("could not load image");
+        return;
+      }
+      BufferedImage icon = ImageIO.read(imageStream);
+      Inf101Graphics.drawCenteredImage(g2, icon, x, y, this.getHeight() * scaleFactor);
+    } catch (IOException e) {
+      System.err.println("Could not load sound icon");
+    }
   }
 
   // title is actually a TetrisBoard drawn at runtime
@@ -237,6 +244,10 @@ public class TetrisView extends JPanel {
       // this is not using the draw-cells method since this is only used once
       // and I don't want to clutter up all the methods in the tetromino-package.
       InputStream stream = TetrisView.class.getResourceAsStream(TITLE_FILE);
+      if (stream == null) {
+        System.err.println("could not read title from file");
+        return;
+      }
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
       List<String> lines = reader.lines().toList();
       reader.close();

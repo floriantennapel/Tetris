@@ -67,4 +67,9 @@ public interface ControllableTetrisModel {
    * Turn sound on or off depending on the current state
    */
   void toggleSound();
+
+  /**
+   * Save score to file if it is higher than current high-score
+   */
+  void saveHighScore();
 }

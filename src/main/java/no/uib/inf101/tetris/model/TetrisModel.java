@@ -184,7 +184,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     if (!isValidPosition(currentlyFallingTetromino)) {
       gameState = GameState.GAME_OVER;
       if (score > highScore) {
-        writeHighScore();
+        saveHighScore();
       }
     }
   }
@@ -276,10 +276,12 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   }
 
 
-  // After many attempts, I was unable to write this to an internal project file.
-  // Apparently the resources directory does not allow for run-time writing to files.
-  // Instead, the file is written in the directory that the program is run in.
-  private void writeHighScore() {
+  @Override
+  public void saveHighScore() {
+    if (score <= highScore) {
+      return;
+    }
+
     try {
       File file = new File(HIGH_SCORE_FILE);
       if (file.exists()) {

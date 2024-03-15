@@ -5,11 +5,9 @@ import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.tetris.view.TetrisView;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
-public class TetrisController implements KeyListener {
+public class TetrisController implements KeyListener, WindowListener {
   private final ControllableTetrisModel model;
   private final TetrisView view;
   private final Timer timer;
@@ -24,22 +22,9 @@ public class TetrisController implements KeyListener {
 
     view.addKeyListener(this);
     view.setFocusable(true);
+
     timer.start();
     music.run();
-  }
-
-  private void clockTick(ActionEvent e) {
-    if (model.getGameState() != GameState.ACTIVE_GAME) {
-      return;
-    }
-
-    model.clockTick();
-    setTimerDelay();
-    view.repaint();
-  }
-
-  private void setTimerDelay() {
-    timer.setDelay(model.getDeltaTime());
   }
 
   @Override
@@ -77,6 +62,21 @@ public class TetrisController implements KeyListener {
     view.repaint();
   }
 
+  @Override
+  public void windowClosing(WindowEvent e) {
+    model.saveHighScore();
+  }
+
+  private void clockTick(ActionEvent e) {
+    if (model.getGameState() != GameState.ACTIVE_GAME) {
+      return;
+    }
+
+    model.clockTick();
+    setTimerDelay();
+    view.repaint();
+  }
+
   private void checkMoveKeys(KeyEvent keyEvent) {
     switch(keyEvent.getKeyCode()) {
       case KeyEvent.VK_LEFT, KeyEvent.VK_A  -> model.moveTetromino(0, -1);
@@ -101,6 +101,11 @@ public class TetrisController implements KeyListener {
     );
   }
 
+  private void setTimerDelay() {
+    timer.setDelay(model.getDeltaTime());
+  }
+
+
 
 
   // unused methods
@@ -110,4 +115,22 @@ public class TetrisController implements KeyListener {
 
   @Override
   public void keyReleased(KeyEvent keyEvent) { }
+
+  @Override
+  public void windowOpened(WindowEvent e) {}
+
+  @Override
+  public void windowClosed(WindowEvent e) {}
+
+  @Override
+  public void windowIconified(WindowEvent e) {}
+
+  @Override
+  public void windowDeiconified(WindowEvent e) {}
+
+  @Override
+  public void windowActivated(WindowEvent e) {}
+
+  @Override
+  public void windowDeactivated(WindowEvent e) {}
 }

@@ -25,6 +25,7 @@ public class TetrisMain {
     // We here set som properties of the main window, 
     // and tell it to display our tetrisView
     JFrame frame = new JFrame(WINDOW_TITLE);
+    frame.addWindowListener(controller);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     // Here we set which component to view in our window
@@ -34,5 +35,4 @@ public class TetrisMain {
     frame.pack();
     frame.setVisible(true);
   }
-  
 }

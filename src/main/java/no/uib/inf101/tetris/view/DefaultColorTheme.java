@@ -11,7 +11,7 @@ import java.util.Map;
 public class DefaultColorTheme implements ColorTheme {
   // color of pieces is stored in separate file
   private static final String COLOR_FILE = "defaultColors.txt";
-  private static final String FONT_FAMILY = "Courier";
+  private static final String FONT_FAMILY = "Courier"; // does not work on windows
 
   private final Map<Character, Color> charToColorMap;
 
@@ -61,6 +61,10 @@ public class DefaultColorTheme implements ColorTheme {
   private void readColorsFromFile() throws RuntimeException {
     try {
       InputStream inputStream = DefaultColorTheme.class.getResourceAsStream(COLOR_FILE);
+      if (inputStream == null) {
+        System.err.println("could not read tetromino colors from file");
+        return;
+      }
       BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
       String line;
