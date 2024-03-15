@@ -7,7 +7,7 @@ import no.uib.inf101.tetris.view.TetrisView;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class TetrisController implements KeyListener, WindowListener {
+public class TetrisController implements KeyListener, WindowListener, MouseListener {
   private final ControllableTetrisModel model;
   private final TetrisView view;
   private final Timer timer;
@@ -21,6 +21,7 @@ public class TetrisController implements KeyListener, WindowListener {
     this.music = new TetrisSong();
 
     view.addKeyListener(this);
+    view.addMouseListener(this);
     view.setFocusable(true);
 
     timer.start();
@@ -74,6 +75,18 @@ public class TetrisController implements KeyListener, WindowListener {
 
     model.clockTick();
     setTimerDelay();
+    view.repaint();
+  }
+
+  // lead tester (my girlfriend Anna) decided that clicking should do something
+  @Override
+  public void mousePressed(MouseEvent mouseEvent) {
+    switch (model.getGameState()) {
+      case START_MENU -> model.setGameState(GameState.ACTIVE_GAME);
+      case PAUSED -> model.setGameState(GameState.ACTIVE_GAME);
+      case GAME_OVER -> model.resetGame();
+    }
+
     view.repaint();
   }
 
@@ -133,4 +146,16 @@ public class TetrisController implements KeyListener, WindowListener {
 
   @Override
   public void windowDeactivated(WindowEvent e) {}
+
+  @Override
+  public void mouseClicked(MouseEvent mouseEvent) {}
+
+  @Override
+  public void mouseReleased(MouseEvent mouseEvent) {}
+
+  @Override
+  public void mouseEntered(MouseEvent mouseEvent) {}
+
+  @Override
+  public void mouseExited(MouseEvent mouseEvent) {}
 }
