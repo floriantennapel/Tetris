@@ -23,7 +23,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private static final int START_DELTA_TIME = 1000;
 
   // file is stored in root of current directory, writing to the resources folder is not allowed at runtime
-  private static final String HIGH_SCORE_FILE = "highscore.txt";
+  private static final String HIGH_SCORE_FILE = ".highscore.txt";
 
   private final TetrominoFactory tetrominoFactory;
 
