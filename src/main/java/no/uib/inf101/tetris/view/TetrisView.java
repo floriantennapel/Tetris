@@ -218,7 +218,7 @@ public class TetrisView extends JPanel {
 
     g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 40));
     Inf101Graphics.drawCenteredString(
-        g2, "Press m to mute",
+        g2, "Press m to turn music on/off",
         width / 2.0, height - (height * 0.04)
     );
   }
