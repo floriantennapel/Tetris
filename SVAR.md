@@ -14,10 +14,13 @@ Videre om Interfaces har jeg lært nytten av å la en klasse implementere flere 
 Jeg ønsker å lære mer om hvordan man bør skrive tester og hva som er gode tester. 
 Videre ønsker jeg å vite hvordan grafiske programmer som dette kan optimaliseres for å kjøre bedre, allerede nå merker jeg at programmet noen gang henger seg litt fast, Tetris er et veldig enkelt spill og burde kunne kjøre helt jevnt på en moderne maskin.
 
+En stor del av tiden jeg har brukt på denne oppgaven har gått til fikse bugs og problemer knyttet til ulike operativsystemer. Jeg bruker selv linux og har opplevd å være fornøyd med noe, for så å teste det på windows og få en haug med feilmeldinger, eller at ting ser helt rart ut.
+Det gjelder ikke bare skalering av ting, men også hvordan lyden høres ut, hvilke fonter som kan brukes, lesing og skriving av filer osv.. Jeg ser at det er veldig mye å lære om hvordan en sørger for kryss-kompatibilitet av programmer og dette er noe jeg ønsker å bruke mer tid på senere.
+
 
 ## Hvilke grep gjør vi for å øke modulariteten i koden? Gi noen eksempeler.
 
-Der vi bruker objekter er typen til objektet i stor grad grensesnittet klassen til objektet implementerer og ikke klassen selv. På denne måten kan vi enkelt bytte ut klassen med en annen klasse uten å endre noe kode i programmet som bruker denne klassen. Et eksempel på dette er de to implementasjonene av TetrominoFactory i tetromino pakken.
+Der vi bruker objekter er typen til objektet i stor grad grensesnittet som objektet implementerer og ikke klassen selv. På denne måten kan vi enkelt bytte ut klassen med en annen klasse av samme type uten å endre noe kode i programmet som bruker dette objektet. Et eksempel på dette er de to implementasjonene av TetrominoFactory i tetromino pakken.
 Her var det veldig enkelt for meg å skrive en ny klasse der implementasjonsdetaljene var annerledes. I TetrisModel trengte jeg kun å endre en linje der jeg kalte på konstruktøren til BagTetrominoFactory istedenfor RandomTetrominoFactory.
 
 Jeg brukte i klassen ShadowColorTheme arv for å unngå å skrive en helt ny implementasjon av ColorTheme, her trengte jeg bare å bruke DefaultColorTheme sin getCellColor og overkjørte den for å gjøre fargen gjennomsiktig. På denne måten kan jeg endre fargene i DefaultColorTheme og alltid være sikker på at skyggen til brikken har samme farge, dette gjør også at vi unngår repetisjon av kode.
