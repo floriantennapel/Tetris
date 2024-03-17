@@ -9,6 +9,11 @@ Frem til nå har vi stort sett sett på programmer som er fullstendig inneholdt 
 
 Videre om Interfaces har jeg lært nytten av å la en klasse implementere flere grensesnitt slik som TetrisModel implementerer både ControllableTetrisModel og ViewableTetrisModel, på denne måten er klassene mye lettere å bruke ettersom vi kun får tilgang til metodene som trengs til et gitt formål og vi får mye bedre innkapsling slik at vi ikke med uhell endrer ting vi ikke burde kunne endre.
 
+Testing er også noe jeg har begynt sette stor pris på. Jeg syns det er fint å kunne kjøre alle testene før jeg pusher og forstår i mye større grad enn før hvorfor vi tester. På siste dagen før fristen opplevde jeg at testene ikke lengre passerte, kjøring av programmet funket helt fint, men testene viste at det var kommet en bug som jeg ellers aldri hadde merket. 
+Fordi alle testene som feilet tilhørte samme klasse tok det meg veldig kort tid å finne ut hvor feilen lå og den ble raskt ordnet opp i. 
+
+Det var også veldig nyttig å ha gode tester til radfjerning, dette var litt komplisert og testene viste at ting ikke stemte helt, når jeg ellers bare av å kjøre programmet synest alt så bra ut. 
+
 ## Hva er det neste du ønsker å lære om Java og programmering?
 
 Jeg ønsker å lære mer om hvordan man bør skrive tester og hva som er gode tester. 
