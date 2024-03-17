@@ -49,12 +49,22 @@ public class TetrisController implements KeyListener, WindowListener, MouseListe
       case PAUSED -> {
         if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
           togglePause();
+        } else if (keyEvent.getKeyChar() == 'h') {
+          model.setGameState(GameState.HELP);
+        }
+      }
+      case HELP -> {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+          model.setGameState(GameState.ACTIVE_GAME);
         }
       }
       case ACTIVE_GAME -> {
         if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
           togglePause();
+        } else if (keyEvent.getKeyChar() == 'h') {
+          model.setGameState(GameState.HELP);
         }
+
         checkMoveKeys(keyEvent);
       }
     }
@@ -80,7 +90,7 @@ public class TetrisController implements KeyListener, WindowListener, MouseListe
   @Override
   public void mousePressed(MouseEvent mouseEvent) {
     switch (model.getGameState()) {
-      case START_MENU, PAUSED -> model.setGameState(GameState.ACTIVE_GAME);
+      case START_MENU, PAUSED, HELP -> model.setGameState(GameState.ACTIVE_GAME);
       case GAME_OVER -> model.resetGame();
     }
 

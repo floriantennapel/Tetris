@@ -17,6 +17,7 @@ import java.util.List;
 public class TetrisView extends JPanel {
   private static final double OUTER_MARGIN = 5.0;
   private static final double INNER_MARGIN = 2.0;
+
   // tweaked to fit on windows with 150 % scaling
   private static final double PREFERRED_CELL_SIZE = 29.5;
   private static final String TITLE_FILE = "title.txt";
@@ -88,11 +89,15 @@ public class TetrisView extends JPanel {
     // draw position tetromino will drop to
     drawCells(g2, model.getDroppedPosition(), posToPixel, shadowColorTheme);
 
-    if (model.getGameState() == GameState.GAME_OVER) {
-      drawOntopOfScreen(g2, "GAME OVER", "Press enter to play again");
-    }
-    if (model.getGameState() == GameState.PAUSED) {
-      drawOntopOfScreen(g2, "GAME PAUSED", "Press esc to resume game");
+    switch (model.getGameState()) {
+      case GAME_OVER -> drawOntopOfScreen(
+          g2, "GAME OVER", "Press enter to play again", ""
+      );
+      case PAUSED -> drawOntopOfScreen(
+          g2, "GAME PAUSED", "Press esc to resume game",
+          "Press h to view controls"
+      );
+      case HELP -> drawHelpScreen(g2);
     }
   }
 
@@ -130,8 +135,8 @@ public class TetrisView extends JPanel {
     Inf101Graphics.drawCenteredString(g2, Integer.toString(model.getLevel()), sideCenter, height * 0.6);
 
     Inf101Graphics.drawCenteredString(g2, "NEXT PIECE", sideCenter, height * 0.75);
-    drawPreviewPiece(g2);
 
+    drawPreviewPiece(g2);
     drawSoundIcon(g2, width * 0.93, height * 0.95, 0.00008);
   }
 
@@ -158,7 +163,50 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getNext(), posToPixel, colorTheme);
   }
 
-  private void drawOntopOfScreen(Graphics2D g2, String mainText, String secondaryText) {
+  private void drawHelpScreen(Graphics2D g2) {
+    int height = this.getHeight();
+    int width = this.getWidth();
+
+    g2.setColor(colorTheme.getPauseForeground());
+    g2.fillRect(0, 0, width, height);
+
+    g2.setFont(colorTheme.getFont(width / 15.0));
+    g2.setColor(colorTheme.getBrightFontColor());
+
+    Inf101Graphics.drawCenteredString(g2, "Controls", width / 2.0, height * 0.15);
+
+    int leftX = width / 20;
+    int rightX = width / 2;
+    int deltaHeight = height / 15;
+    int currentY = (int) (height * 0.35);
+
+    g2.setFont(colorTheme.getFont(width / 30.0));
+
+    // arrow keycodes
+    // up: 8593, down: 8595, left, 8592, right: 8594
+    String[] controls = {
+        "Move piece", String.format("%c,%c,%c / a,s,d", 8592, 8595, 8594),
+        "Rotate right", (char) 8593 + " / w",
+        "Rotate left", "shift / e",
+        "Drop piece", "space",
+        "", "",
+        "Pause/resume", "esc",
+        "Music on/off", "m",
+        "Help screen", "h",
+    };
+
+    for (int i = 0; i+1 < controls.length; i += 2) {
+      String description = controls[i];
+      String keys = controls[i+1];
+
+      g2.drawString(description, leftX, currentY);
+      g2.drawString(keys, rightX, currentY);
+
+      currentY += deltaHeight;
+    }
+  }
+
+  private void drawOntopOfScreen(Graphics2D g2, String text1, String text2, String text3) {
     int height = this.getHeight();
     int width = this.getWidth();
 
@@ -171,12 +219,16 @@ public class TetrisView extends JPanel {
 
     Font big = colorTheme.getFont(width / 13.0);
     Font medium = colorTheme.getFont(width / 27.0);
+    Font small = colorTheme.getFont(width / 32.0);
 
     g2.setFont(big);
-    Inf101Graphics.drawCenteredString(g2, mainText, x, y);
+    Inf101Graphics.drawCenteredString(g2, text1, x, y);
 
     g2.setFont(medium);
-    Inf101Graphics.drawCenteredString(g2, secondaryText, x, y + height / 8.0);
+    Inf101Graphics.drawCenteredString(g2, text2, x, y + height / 8.0);
+
+    g2.setFont(small);
+    Inf101Graphics.drawCenteredString(g2, text3, x, y + height / 5.0);
   }
 
   private void drawStartMenu(Graphics2D g2) {
@@ -226,7 +278,7 @@ public class TetrisView extends JPanel {
       String imageFile = model.getMusicState() ? SOUND_IMAGE : MUTE_IMAGE;
       InputStream imageStream = TetrisView.class.getResourceAsStream(imageFile);
       if (imageStream == null) {
-        System.err.println("could not load image");
+        System.err.println("could not load sound icon");
         return;
       }
       BufferedImage icon = ImageIO.read(imageStream);
@@ -259,7 +311,7 @@ public class TetrisView extends JPanel {
         }
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      System.err.println("could not read title from file");
     }
   }
 }

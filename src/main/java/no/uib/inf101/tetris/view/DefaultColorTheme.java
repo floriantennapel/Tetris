@@ -45,7 +45,7 @@ public class DefaultColorTheme implements ColorTheme {
 
   @Override
   public Color getPauseForeground() {
-    return new Color(0, 0, 0, 128);
+    return new Color(0, 0, 0, 150);
   }
 
   @Override
