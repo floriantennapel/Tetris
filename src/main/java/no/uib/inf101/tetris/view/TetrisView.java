@@ -89,10 +89,10 @@ public class TetrisView extends JPanel {
     drawCells(g2, model.getDroppedPosition(), posToPixel, shadowColorTheme);
 
     if (model.getGameState() == GameState.GAME_OVER) {
-      drawOntopOfScreen(g2, "Game Over", "Press enter to play again");
+      drawOntopOfScreen(g2, "GAME OVER", "Press enter to play again");
     }
     if (model.getGameState() == GameState.PAUSED) {
-      drawOntopOfScreen(g2, "Game Paused", "Press esc to resume game");
+      drawOntopOfScreen(g2, "GAME PAUSED", "Press esc to resume game");
     }
   }
 
@@ -118,7 +118,7 @@ public class TetrisView extends JPanel {
     // There are many "magic numbers" here, but they are just that, arbitrarily picked numbers that look good
     // It doesn't really make sense to name the values anything
     g2.setColor(Color.DARK_GRAY);
-    g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 21));
+    g2.setFont(colorTheme.getFont(width / 27.0));
 
     Inf101Graphics.drawCenteredString(g2, "HIGH SCORE", sideCenter, height * 0.1);
     Inf101Graphics.drawCenteredString(g2, String.format("%07d", model.getHighScore()), sideCenter, height * 0.15);
@@ -169,9 +169,8 @@ public class TetrisView extends JPanel {
     double x = width / 2.0;
     double y = height / 7.0 * 3; // slightly above center
 
-    String fontFamily = colorTheme.getFontFamily();
-    Font big = new Font(fontFamily, Font.BOLD, width / 8);
-    Font medium = new Font(fontFamily, Font.BOLD, width / 20);
+    Font big = colorTheme.getFont(width / 13.0);
+    Font medium = colorTheme.getFont(width / 27.0);
 
     g2.setFont(big);
     Inf101Graphics.drawCenteredString(g2, mainText, x, y);
@@ -206,16 +205,16 @@ public class TetrisView extends JPanel {
     );
     drawTitle(g2, posToPix);
 
-    g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 20));
+    g2.setFont(colorTheme.getFont(width / 28.0));
     g2.setColor(Color.DARK_GRAY);
     Inf101Graphics.drawCenteredString(
-        g2, "Press enter to start game",
-        width / 2.0, height * 0.7
+        g2, "PRESS ENTER TO START GAME",
+        width / 2.0, height * 0.65
     );
 
     drawSoundIcon(g2, width / 2.0, height - (height * 0.1), 0.0001);
 
-    g2.setFont(new Font(colorTheme.getFontFamily(), Font.BOLD, width / 40));
+    g2.setFont(colorTheme.getFont(width / 45.0));
     Inf101Graphics.drawCenteredString(
         g2, "Press m to turn music on/off",
         width / 2.0, height - (height * 0.04)

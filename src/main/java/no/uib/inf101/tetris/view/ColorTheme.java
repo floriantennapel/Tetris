@@ -12,12 +12,15 @@ public interface ColorTheme {
   /** @return color of background, can be null */
   Color getBackgroundColor();
 
-  /** @return font family used by all text, for example Arial or Times */
-  String getFontFamily();
-
   /** color and opacity of pause screen */
   Color getPauseForeground();
 
   /** font-color of game-over message */
   Color getBrightFontColor();
+
+  /**
+   * Get the default font to use globally
+   * @param size size of font
+   */
+  Font getFont(double size);
 }

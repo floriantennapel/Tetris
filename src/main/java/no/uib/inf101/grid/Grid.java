@@ -12,7 +12,7 @@ public class Grid<E> implements IGrid<E> {
 
   public Grid(int rows, int cols, E defaultValue) {
     if (rows <= 0 || cols <= 0) {
-      throw new IllegalArgumentException("cannot have zero or less rows or cols");
+      throw new IllegalArgumentException("cannot have zero or less rows or columns");
     }
 
     this.rows = rows;

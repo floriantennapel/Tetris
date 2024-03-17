@@ -11,13 +11,17 @@ import java.util.Map;
 public class DefaultColorTheme implements ColorTheme {
   // color of pieces is stored in separate file
   private static final String COLOR_FILE = "defaultColors.txt";
-  private static final String FONT_FAMILY = "Courier"; // does not work on windows
+
+  // PressStart2P font from Google fonts, licenced under the Open Font Licence
+  private static final String FONT_FILE = "PressStart2P-Regular.ttf";
 
   private final Map<Character, Color> charToColorMap;
+  private final Font font;
 
   public DefaultColorTheme() {
     charToColorMap = new HashMap<>();
     readColorsFromFile();
+    font = readFontFromFile();
   }
 
   @Override
@@ -40,11 +44,6 @@ public class DefaultColorTheme implements ColorTheme {
   }
 
   @Override
-  public String getFontFamily() {
-    return FONT_FAMILY;
-  }
-
-  @Override
   public Color getPauseForeground() {
     return new Color(0, 0, 0, 128);
   }
@@ -52,6 +51,31 @@ public class DefaultColorTheme implements ColorTheme {
   @Override
   public Color getBrightFontColor() {
     return Color.WHITE;
+  }
+
+  @Override
+  public Font getFont(double size) {
+    // floating point default is double, however deriveFont only accepts float
+    // instead of always casting to float when calling it is easier to do it here
+    return font.deriveFont((float) size);
+  }
+
+  private Font readFontFromFile() {
+    Font defaultFont = new Font("Courier", Font.BOLD, 12);
+    try {
+      InputStream stream = DefaultColorTheme.class.getResourceAsStream(FONT_FILE);
+      if (stream == null) {
+        System.err.println("could not read font from file");
+        return defaultFont;
+      }
+      Font font = Font.createFont(Font.TRUETYPE_FONT, stream);
+      stream.close();
+
+      return font;
+    } catch (IOException | FontFormatException e) {
+      System.err.println("Could not read font from file");
+      return defaultFont;
+    }
   }
 
   private Color hexColor(String hexValue) {
