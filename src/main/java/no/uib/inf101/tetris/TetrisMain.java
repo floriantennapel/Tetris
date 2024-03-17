@@ -25,6 +25,8 @@ public class TetrisMain {
     // We here set som properties of the main window, 
     // and tell it to display our tetrisView
     JFrame frame = new JFrame(WINDOW_TITLE);
+
+    // ensuring that game score is saved before window-close
     frame.addWindowListener(controller);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
