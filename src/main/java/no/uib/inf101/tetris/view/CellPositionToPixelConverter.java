@@ -23,14 +23,19 @@ public class CellPositionToPixelConverter {
    * @throws IllegalArgumentException if CellPosition is out of bounds
    */
   public Rectangle2D getBoundsForCell(CellPosition cp) throws IllegalArgumentException {
-    if ((cp.col() < 0) || (cp.col() >= gd.getCols()) || (cp.row() < 0) || (cp.row() >= gd.getRows())) {
+    int rows = gd.getRows();
+    int cols = gd.getCols();
+    int row = cp.row();
+    int col = cp.col();
+
+    if ((col < 0) || (col >= cols) || (row < 0) || (row >= rows)) {
       throw new IllegalArgumentException("Cell position out of bounds");
     }
 
-    double cellWidth = (box.getWidth() - margin) / gd.getCols() - margin;
-    double cellHeight = (box.getHeight() - margin) / gd.getRows() - margin;
-    double cellX = box.getX() + margin + cp.col() * (margin + cellWidth);
-    double cellY = box.getY() + margin + cp.row() * (margin + cellHeight);
+    double cellWidth = (box.getWidth() - margin) / cols - margin;
+    double cellHeight = (box.getHeight() - margin) / rows - margin;
+    double cellX = box.getX() + margin + col * (margin + cellWidth);
+    double cellY = box.getY() + margin + row * (margin + cellHeight);
 
     return new Rectangle2D.Double(cellX, cellY, cellWidth, cellHeight);
   }
