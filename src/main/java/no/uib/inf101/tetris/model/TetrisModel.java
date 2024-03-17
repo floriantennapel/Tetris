@@ -49,14 +49,9 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     currentlyFallingTetromino = this.tetrominoFactory.getNext().shiftedToTopCenterOf(board);
     nextTetromino = this.tetrominoFactory.getNext();
-    gameState = GameState.START_MENU;
-    deltaTime = START_DELTA_TIME;
-    level = 1;
-    score = 0;
-    linesCleared = 0;
-    soundOn = false;
+    resetGame();
 
-    highScore = readHighScore();
+    soundOn = false;
   }
 
   @Override
@@ -236,46 +231,6 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     newTetromino();
   }
 
-  private void addPointsAndIncrementDifficulty(int rowsCleared) {
-    score += SCORING[rowsCleared] * level;
-    linesCleared += rowsCleared;
-    level = linesCleared / 10 + 1;
-
-    deltaTime = START_DELTA_TIME - (START_DELTA_TIME * (level - 1) / (FINAL_LEVEL - 1));
-  }
-
-  private boolean isValidPosition(Tetromino tetromino) {
-    for (GridCell<Character> gc : tetromino) {
-      // out of bounds
-      if (!board.positionIsOnGrid(gc.pos())) {
-        return false;
-      }
-      // cell is occupied
-      if (board.get(gc.pos()) != '-') {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  private int readHighScore() {
-    try {
-      BufferedReader reader = new BufferedReader(
-          new FileReader(HIGH_SCORE_FILE)
-      );
-
-      int highScore = Integer.parseInt(reader.readLine());
-
-      reader.close();
-      return highScore;
-    } catch (IOException e) {
-      System.err.println("Could not read high-score from file");
-      return 0;
-    }
-  }
-
-
   @Override
   public void saveHighScore() {
     if (score <= highScore) {
@@ -302,6 +257,48 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
       writer.close();
     } catch (IOException | NullPointerException e ) {
       System.err.println("Could not write high-score to file");
+    }
+  }
+
+  private void addPointsAndIncrementDifficulty(int rowsCleared) {
+    score += SCORING[rowsCleared] * level;
+    linesCleared += rowsCleared;
+    level = linesCleared / 10 + 1;
+
+    // decrements move time evenly in FINAL_LEVEL steps,
+    // when level == FINAL_LEVEL deltaTime will be 0
+    deltaTime = START_DELTA_TIME - (START_DELTA_TIME * (level - 1) / (FINAL_LEVEL - 1));
+  }
+
+  private boolean isValidPosition(Tetromino tetromino) {
+    for (GridCell<Character> gc : tetromino) {
+      // out of bounds
+      if (!board.positionIsOnGrid(gc.pos())) {
+        return false;
+      }
+      // cell is occupied
+      if (board.get(gc.pos()) != '-') {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // If file cannot be read, a high score of 0 will be returned
+  private int readHighScore() {
+    try {
+      BufferedReader reader = new BufferedReader(
+          new FileReader(HIGH_SCORE_FILE)
+      );
+
+      int highScore = Integer.parseInt(reader.readLine());
+
+      reader.close();
+      return highScore;
+    } catch (IOException e) {
+      System.err.println("Could not read high-score from file");
+      return 0;
     }
   }
 }

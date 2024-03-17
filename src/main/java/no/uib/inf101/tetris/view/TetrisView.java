@@ -120,21 +120,34 @@ public class TetrisView extends JPanel {
 
     double sideCenter = width * 4 / 5.0;
 
-    // There are many "magic numbers" here, but they are just that, arbitrarily picked numbers that look good
+    // There are many "magic numbers" here, but they are just that,
+    // arbitrarily picked numbers that look good
     // It doesn't really make sense to name the values anything
     g2.setColor(Color.DARK_GRAY);
     g2.setFont(colorTheme.getFont(width / 27.0));
 
-    Inf101Graphics.drawCenteredString(g2, "HIGH SCORE", sideCenter, height * 0.1);
-    Inf101Graphics.drawCenteredString(g2, String.format("%07d", model.getHighScore()), sideCenter, height * 0.15);
+    Inf101Graphics.drawCenteredString(
+        g2, "HIGH SCORE", sideCenter, height * 0.1
+    );
+    Inf101Graphics.drawCenteredString(
+        g2, String.format("%07d", model.getHighScore()),
+        sideCenter, height * 0.15
+    );
 
     Inf101Graphics.drawCenteredString(g2, "SCORE", sideCenter, height * 0.3);
-    Inf101Graphics.drawCenteredString(g2, String.format("%07d", model.getScore()), sideCenter, height * 0.35);
+    Inf101Graphics.drawCenteredString(
+        g2, String.format("%07d", model.getScore()),
+        sideCenter, height * 0.35
+    );
 
     Inf101Graphics.drawCenteredString(g2, "LEVEL", sideCenter, height * 0.55);
-    Inf101Graphics.drawCenteredString(g2, Integer.toString(model.getLevel()), sideCenter, height * 0.6);
+    Inf101Graphics.drawCenteredString(
+        g2, Integer.toString(model.getLevel()), sideCenter, height * 0.6
+    );
 
-    Inf101Graphics.drawCenteredString(g2, "NEXT PIECE", sideCenter, height * 0.75);
+    Inf101Graphics.drawCenteredString(
+        g2, "NEXT PIECE", sideCenter, height * 0.75
+    );
 
     drawPreviewPiece(g2);
     drawSoundIcon(g2, width * 0.93, height * 0.95, 0.00008);

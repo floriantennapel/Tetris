@@ -7,6 +7,8 @@ import no.uib.inf101.tetris.view.TetrisView;
 import javax.swing.*;
 import java.awt.event.*;
 
+// WindowListener and MouseListener are used very little,
+// so I think it's fitting to include them in this class
 public class TetrisController implements KeyListener, WindowListener, MouseListener {
   private final ControllableTetrisModel model;
   private final TetrisView view;
@@ -76,16 +78,6 @@ public class TetrisController implements KeyListener, WindowListener, MouseListe
     model.saveHighScore();
   }
 
-  private void clockTick(ActionEvent e) {
-    if (model.getGameState() != GameState.ACTIVE_GAME) {
-      return;
-    }
-
-    model.clockTick();
-    setTimerDelay();
-    view.repaint();
-  }
-
   // lead tester (my girlfriend Anna) decided that clicking should do something
   @Override
   public void mousePressed(MouseEvent mouseEvent) {
@@ -94,6 +86,16 @@ public class TetrisController implements KeyListener, WindowListener, MouseListe
       case GAME_OVER -> model.resetGame();
     }
 
+    view.repaint();
+  }
+
+  private void clockTick(ActionEvent e) {
+    if (model.getGameState() != GameState.ACTIVE_GAME) {
+      return;
+    }
+
+    model.clockTick();
+    setTimerDelay();
     view.repaint();
   }
 
@@ -110,7 +112,10 @@ public class TetrisController implements KeyListener, WindowListener, MouseListe
 
   private void togglePause() {
     GameState currentState = model.getGameState();
-    if (currentState.equals(GameState.GAME_OVER)) {
+    if (
+        !currentState.equals(GameState.ACTIVE_GAME) &&
+        !currentState.equals(GameState.PAUSED)
+    ) {
       return;
     }
 
