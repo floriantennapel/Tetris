@@ -44,12 +44,12 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   private int level;
 
   public TetrisModel(TetrisBoard board, TetrominoFactory tetrominoFactory) {
+    initializeGame();
     this.board = board;
     this.tetrominoFactory = tetrominoFactory;
 
     currentlyFallingTetromino = this.tetrominoFactory.getNext().shiftedToTopCenterOf(board);
     nextTetromino = this.tetrominoFactory.getNext();
-    resetGame();
 
     soundOn = false;
   }
@@ -92,8 +92,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
   }
 
   @Override
-  public void resetGame() {
-    board = new TetrisBoard(board.getRows(), board.getCols());
+  public void initializeGame() {
+    if (board != null) {
+      board = new TetrisBoard(board.getRows(), board.getCols());
+    }
 
     gameState = GameState.START_MENU;
     deltaTime = START_DELTA_TIME;

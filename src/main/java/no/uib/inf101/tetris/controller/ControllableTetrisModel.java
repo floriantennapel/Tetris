@@ -5,9 +5,11 @@ import no.uib.inf101.tetris.model.GameState;
 public interface ControllableTetrisModel {
 
   /**
-   * Resets game and returns back to menu screen
+   * Sets game back to starting state
+   * <p/>
+   * Level and score is set to 0, board is cleared etc.
    */
-  void resetGame();
+  void initializeGame();
 
   /**
    * Move the currently falling piece by specified amount

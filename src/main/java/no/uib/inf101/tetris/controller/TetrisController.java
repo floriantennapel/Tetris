@@ -45,7 +45,7 @@ public class TetrisController implements KeyListener, WindowListener, MouseListe
       }
       case GAME_OVER -> {
         if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
-          model.resetGame();
+          model.initializeGame();
         }
       }
       case PAUSED -> {
@@ -83,7 +83,7 @@ public class TetrisController implements KeyListener, WindowListener, MouseListe
   public void mousePressed(MouseEvent mouseEvent) {
     switch (model.getGameState()) {
       case START_MENU, PAUSED, HELP -> model.setGameState(GameState.ACTIVE_GAME);
-      case GAME_OVER -> model.resetGame();
+      case GAME_OVER -> model.initializeGame();
     }
 
     view.repaint();
